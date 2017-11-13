@@ -1,5 +1,5 @@
 var page = 1;// page全局变量
-function queryAppManagement() {
+function queryAppManagement() { 
 	$
 			.ajax({
 				url : WebApplicationPath + "/app/queryApp.html",
