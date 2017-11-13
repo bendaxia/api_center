@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<!-- Spring读取Spring的配置文件 -->
+	<context-param>
+		<!-- 名称 -->
+		<param-name>contextConfigLocation</param-name>
+		<!-- 文件的位置 -->
+		<param-value>classpath:application-context.xml</param-value>
+	</context-param>
+<context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>apicenter</param-value>
+</context-param>
+	<!-- Spring 的监听器配置 -->
+	<listener>
+		<!-- 在Spring-web包下 context -->
+		<listener-class>org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<!-- POST提交过滤器 解决中文乱码 -->
+	<filter>
+		<filter-name>encoding</filter-name>
+		<!-- 字符编码过滤器 在spring-web包下 -->
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- SpringMVC配置 -->
+	<servlet>
+		<servlet-name>apicenter</servlet-name>
+		<!-- 配置SpringMVC核心控制器 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc.xml</param-value>
+		</init-param>
+	</servlet>
+	<!-- Log4j配置 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<!-- 加载log4j配置文件 -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<servlet-mapping>
+		<servlet-name>apicenter</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+</web-app>

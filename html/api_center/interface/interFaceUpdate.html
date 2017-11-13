@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>API管理中心</title>
+	<link rel="stylesheet" href="../api_center/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../api_center/bootstrap/css/bootstrap-theme.min.css"/>
+	<link rel="stylesheet" href="../api_center/css/basic.css"/>
+	<script src="../api_center/js/jquery.min.js"></script>
+	<script src="../api_center/js/basic.js"></script>
+	<script src="../api_center/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../api_center/js/osjs.js"></script>
+	<script src="../api_center/js/update.js"></script>
+<script>
+	$(function() {
+		queryInterfaceType();
+	});
+</script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+				aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="javascript:void(0)">API管理中心</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/interface/interFaceIndex.html">添加接口</a></li>
+				<li><a href="/app/appAdd.html">添加App</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false">管理员 <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">						<?php
+							echo $_COOKIE["name"];
+						?></a></li>
+					</ul></li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid --> </nav>
+	<div class="row">
+		<div class="col-md-2 brline" id="interfaceTypeId">
+			
+		</div>
+		<div class="col-md-10">
+			<ol class="breadcrumb">
+				<li>当前位置：<a href="javascript:void(0)">接口管理</a></li>
+				<li class="active">添加接口</li>
+			</ol>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">接口名称</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputEmail3"
+									placeholder="">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">接口类型</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="interfaceType_id">
+									<!-- <option>请选择接口类型</option> -->
+								</select>
+							</div>
+							<label for="inputPassword3" class="col-sm-1 control-label">接口协议</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="agreement" >
+									<option>HTTP</option>
+									<option>HTTPS</option>
+									</select>
+							</div>
+							<label class="col-sm-1 control-label">接口方式</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="manner">
+									<option>GET</option>
+									<option>POST</option>
+									</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">接口域名</label>
+							<div class="col-sm-2">
+								<select class="form-control" id="domain">
+									<option>http://api.fenshangyun.com</option>
+									<option>http://pay.fenshangyun.com</option>
+									<option>http://shop.fenshangyun.com</option>
+									<option>http://agent.fenshangyun.com</option>
+									<option>http://bi.fenshangyun.com</option>
+								</select>
+							</div>
+							<label for="inputPassword3" class="col-sm-1 control-label">责任人</label>
+							<div class="col-sm-2">
+								<select class="form-control"  id="pic" >
+										
+								</select>
+							</div>
+							<label for="inputPassword3" class="col-sm-1 control-label">联系方式</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" placeholder=""  id="picphone" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">接口地址</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" rows="3" id="address"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">接口描述</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" rows="5" id="description"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">接口参数</label>
+							<div class="col-sm-9">
+								<table id="tableid" class="table table-bordered mb0">
+									 <tr>
+										<th width="5%"></th>
+										<!-- <th width="5%">序号</th> -->
+										<th width="15%">名称</th>
+										<th width="15%">类型</th>
+										<th width="15%">是否可选</th>
+										<th width="15%">默认值</th>
+										<th width="30%">描述</th>
+									</tr>
+								</table>
+								<div class="text-right mt10">
+									<input type="button" class="btn btn-default"  onclick="delTable1u();" value="删除" >
+									<input type="button" class="btn btn-default"  onclick="addNewTable1u();" value="增加" >
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">接口返回参数</label>
+							<div class="col-sm-9">
+								<table id= "tableid2" class="table table-bordered mb0">
+									<tr>
+										<th width="5%"></th>
+										<th width="15%">名称</th>
+										<th width="15%">类型</th>
+										<th width="15%">是否可选</th>
+										<th width="15%">默认值</th>
+										<th width="30%">描述</th>
+									</tr>
+								</table>
+								<div class="text-right mt10">
+									<!-- <button type="submit" class="btn btn-default">删除</button>
+									<button type="submit" class="btn btn-default">添加</button> -->
+									<input type="button" class="btn btn-default"  onclick="delTable2u();" value="删除" >
+									<input type="button" class="btn btn-default"  onclick="addNewTable2u();" value="增加" >
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<input type="button" class="btn btn-default"  onclick="updateInterface();" value="修改" >
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id= "id"  value="${param.id}">
+</body>
+</html>

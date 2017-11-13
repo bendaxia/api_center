@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>API管理中心</title>
+	<link rel="stylesheet" href="../api_center/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../api_center/bootstrap/css/bootstrap-theme.min.css"/>
+	<link rel="stylesheet" href="../api_center/css/basic.css"/>
+	<script src="../api_center/js/jquery.min.js"></script>
+	<script src="../api_center/js/basic.js"></script>
+	<script src="../api_center/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../api_center/js/osjs.js"></script>
+	<script src="../api_center/js/index.js"></script>
+	<script src="../api_center/js/jkxq.js"></script>
+<script>
+	$(function() {
+		queryInterfaceType();
+		queryInterface();
+	});
+	</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="javascript:void(0)">API管理中心</a>
+	    </div>
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+				<li class="active"><a href="/interface/interFaceIndex.html">添加接口</a></li>
+				<li><a href="/app/appAdd.html">添加App</a></li>
+	      </ul>
+	      
+	      <ul class="nav navbar-nav navbar-right">	        
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员 <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">						<?php
+							echo $_COOKIE["name"];
+						?></a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="row">	  
+	 <div class="col-md-2 brline" id="interfaceTypeId">
+		<!-- <ul class="nav nav-pills nav-stacked">
+		  <li role="presentation" class="group"><a href="javascript:void(0)"><i class="glyphicon glyphicon-equalizer"></i> 接口管理</a>
+			<ul class="nav nav-pills nav-stacked">
+			  <li role="presentation"><a href="jkxq.html">接口详情</a></li>
+			</ul>
+		  </li>
+		  <li role="presentation" class="group"><a href="#"><i class="glyphicon glyphicon-flag"></i> App管理</a>
+			<ul class="nav nav-pills nav-stacked">
+			  
+			  <li role="presentation"><a href="appList.html">App列表</a></li>
+			</ul>
+		  </li>		 
+		</ul>  -->
+	  </div>
+	  <div class="col-md-10">
+		<ol class="breadcrumb">
+		  <li>当前位置：<a href="javascript:void(0)">接口管理</a></li>
+		  <li class="active">接口详情</li>
+		</ol>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		   <div class="row">
+			<form class="form-horizontal col-md-11">
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口名称</label>
+					<div class="col-sm-9 mt7"  id="nameId">
+					  	
+					</div>
+			  </div>
+			  <div class="form-group">				
+				<label for="inputPassword3" class="col-sm-2 control-label">接口协议</label>
+				<div class="col-sm-4 mt7" id="agreementId">
+				
+				</div>
+			  </div>
+			    <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口方式</label>
+				<div class="col-sm-9 mt7" id="mannerId">
+				</div>
+			  </div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口域名</label>
+				<div class="col-sm-9 mt7" id="domainId">
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口地址</label>
+				<div class="col-sm-9 mt7" id="addressId">
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口描述</label>
+				<div class="col-sm-9 mt7" id="descriptionId">
+				  
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">负责人</label>
+				<div class="col-sm-9 mt7" id="picId">
+				  
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">联系方式</label>
+				<div class="col-sm-9 mt7" id="picphoneId">
+				  
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">接口参数</label>
+				<div class="col-sm-9">
+				  <table class="table table-bordered mb0" id="pid">
+					
+				  </table>	
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">返回参数</label>
+				<div class="col-sm-9">
+				  <table class="table table-bordered mb0" id = "rid">
+				
+				  </table>	
+				  
+				</div>
+			  </div>
+			  <div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">接口环境</label>
+							<div class="col-sm-2">
+								<select class="form-control"  id = "milieu">
+									<option>dev</option>
+									<option>beta</option>
+									<option>线上</option>
+								</select>
+							</div>
+				  <input type="button" class="btn btn-default" value="Send"  onclick="send();">
+			  </div>
+			</form>
+			<div class="col-md-1">
+				<label class="col-sm-1 control-label"><input type="button"  class="btn btn-default mr20"  value="修改" onclick="update();"></label>
+			</div>
+			</div>
+			<div class="col-sm-offset-2 ">
+
+			  <!-- Nav tabs -->
+				  <ul class="nav nav-tabs" role="tablist">
+				    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Json格式化</a></li>
+				    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">接口信息</a></li>
+				    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">原Json</a></li>
+				    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">接口性能报告</a></li>
+				  </ul>
+			
+			  <!-- Tab panes -->
+				  <div class="tab-content">
+				    <div role="tabpanel" class="tab-pane active" id="home">
+						<textarea class="form-control mt20" name="targetjson" id="jsonId" cols="160" rows="30"> 
+						</textarea> 
+					</div>
+				    <div role="tabpanel" class="tab-pane" id="profile">
+						<textarea class="form-control mt20"  name="projson" id="proId" cols="160" rows="30">
+				    
+						</textarea>
+					</div>
+				    <div role="tabpanel" class="tab-pane" id="messages">
+				    	<textarea class="form-control mt20"  name="yuanjson" id="yuanId" cols="160" rows="10">
+				    	</textarea>
+				    </div>
+				    <div role="tabpanel" class="tab-pane" id="settings">
+				    	<div class="mt20">
+					    	<input type="button"  class="btn btn-default mr20"  value="abSend" onclick="abSend();">并发数：<input type="text"  id="cNumId" class="form-control winput1 mr20">请求总数：<input type="text"  class="form-control winput1" id="nNumId"><br>
+					    	<textarea class="form-control mt20"  name="yuanjson" id="abSendId" cols="160" rows="60"></textarea>
+				    	</div>
+				    </div>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</body>
+</html>
