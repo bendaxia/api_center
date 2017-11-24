@@ -29,29 +29,40 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 	@Override
 	public void addApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
 		ApiCenterApi apiCenterApi = this.apiService.addApi(api);
-		if (apiCenterApi != null) {
-			List<ApiCenterParam> params = new ArrayList<>();
-			apiParams.forEach(param -> {
-				System.out.println(param);
-				ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
-				p.setApiId(apiCenterApi.getId());
-				params.add(p);
-			});
-			List<ApiCenterReturn> returns = new ArrayList<>();
-			apiReturns.forEach(areturn -> {
-				System.out.println(areturn);
-				ApiCenterReturn r = JsonUtils.toBean(areturn, ApiCenterReturn.class);
-				r.setApiId(apiCenterApi.getId());
-				returns.add(r);
-			});
-			this.apiService.addApiParam(params);
-			this.apiService.addApiReturn(returns);
+		if (apiCenterApi == null) {
+			return;
 		}
+		System.out.println("toString-------" + apiParams.toString());
+		List<ApiCenterParam> params = new ArrayList<>();
+		apiParams.forEach(param -> {
+			System.out.println(param);
+//			ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
+//			p.setApiId(apiCenterApi.getId());
+//			params.add(p);
+		});
+		List<ApiCenterReturn> returns = new ArrayList<>();
+		apiReturns.forEach(areturn -> {
+			System.out.println(areturn);
+			ApiCenterReturn r = JsonUtils.toBean(areturn, ApiCenterReturn.class);
+			r.setApiId(apiCenterApi.getId());
+			returns.add(r);
+		});
+		this.apiService.addApiParam(params);
+		this.apiService.addApiReturn(returns);
+	}
+
+	public static void main(String[] args) {
+		List<String> apiParams = new ArrayList<>();
+		apiParams.add("{\"paramName\":\"1\"");
+		apiParams.forEach(param -> {
+			System.out.println(param);
+			ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
+		});
 	}
 
 	@Override
 	public void updateApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
-		if(this.apiService.updateApi(api)) {
+		if (this.apiService.updateApi(api)) {
 			this.apiService.delApiReturn(api.getId());
 			this.apiService.delApiParam(api.getId());
 			List<ApiCenterParam> params = new ArrayList<>();
