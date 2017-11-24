@@ -124,8 +124,10 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
+			System.out.println("apiParams...."+apiParams);
+			System.out.println("apiParams.toString()...."+apiParams.toString());
+			System.out.println("apiReturns.toString()...."+apiReturns.toString());
 			this.apiFacedService.addApi(api, apiReturns, apiParams);
-
 			// 问题:想办法支持header 和 cookie 2017 09 08
 
 			// 解决:header 和 cookie 在模拟请求的时候自行添加 2017 09 12

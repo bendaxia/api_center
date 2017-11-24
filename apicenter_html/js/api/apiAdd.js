@@ -121,35 +121,46 @@ function addApi(){
 
 	var apiParams = [];
 	tr.each(function(i, e) {
-		var apiParam = {};
 		// 从tr拿到td
 		var td = $(this).find("td");
+//		var apiParam = {};
 		// 从td取值
-		apiParam.paramName = td.eq(1).find("input").val();
-		apiParam.paramType = td.eq(2).find("select").val();
-		apiParam.isoptional = td.eq(3).find("input:checked").val();
-		apiParam.testValue = td.eq(4).find("input").val();
-		apiParam.paramDescribe = td.eq(5).find("input").val();
+//		apiParam.paramName = td.eq(1).find("input").val();
+//		apiParam.paramType = td.eq(2).find("select").val();
+//		apiParam.isoptional = td.eq(3).find("input:checked").val();
+//		apiParam.testValue = td.eq(4).find("input").val();
+//		apiParam.paramDescribe = td.eq(5).find("input").val();
+//		apiParams.push(apiParam);
+		var apiParam = '{';
+			apiParam+='"paramName":"'+td.eq(1).find("input").val()+'",';
+			apiParam+='"paramType":"'+td.eq(2).find("select").val()+'",';
+			apiParam+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
+			apiParam+='"testValue":"'+td.eq(4).find("input").val()+'",';
+			apiParam+='"paramDescribe":"'+td.eq(5).find("input").val()+'"';
+		apiParam+=' }';
 		apiParams.push(apiParam);
-		// apiParams.push(JSON.stringify(apiParam));
 	});
 	var apiReturns = [];
 	tr2.each(function(i, e) {
-		var apiReturn = {};
 		// 从tr拿到td
 		var td2 = $(this).find("td");
-		// 从td取值
-		apiReturn.returnName = td2.eq(1).find("input").val();
-		apiReturn.returnType = td2.eq(2).find("select").val();
-		// otr.r_areoptional = td2.eq(3).find("input:checked").val();
-		// otr.r_defaults = td2.eq(4).find("input").val();
-		apiReturn.returnDescribe = td2.eq(5).find("input").val();
+//		var apiReturn = {};
+//		// 从td取值
+//		apiReturn.returnName = td2.eq(1).find("input").val();
+//		apiReturn.returnType = td2.eq(2).find("select").val();
+//		// otr.r_areoptional = td2.eq(3).find("input:checked").val();
+//		// otr.r_defaults = td2.eq(4).find("input").val();
+//		apiReturn.returnDescribe = td2.eq(5).find("input").val();
+//		apiReturns.push(apiReturn);
+		var apiReturn = '{';
+			apiReturn+='"returnName":"'+td.eq(1).find("input").val()+'",';
+			apiReturn+='"returnType":"'+td.eq(2).find("select").val()+'",';
+//			apiReturn+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
+//			apiReturn+='"testValue":"'+td.eq(4).find("input").val()+'",';
+			apiReturn+='"returnDescribe":"'+td.eq(5).find("input").val()+'"';
+			apiReturn+=' }';
 		apiReturns.push(apiReturn);
-		// apiReturns.push(JSON.stringify(apiReturn));
-
 	});
-		console.log(apiReturns);
-	console.log(apiParams);
 	if (apiGroupId == 0) {
 		alert("请选择接口类型");
 		return;
@@ -164,25 +175,18 @@ function addApi(){
 	}
 	for (i = 0; i < apiParams.length; i++) {
 		var param = apiParams[i];
-		// var paramJson = JSON.parse(param);
-		// if (paramJson.paramName == "") {
-		// 	alert("请填写参数名称");
-		// 	return;
-		// }
-		// if (paramJson.testValue == "") {
-		// 	alert("请填写默认值");
-		// 	return;
-		// }
-
-		if (param.paramName == "") {
-			alert("请填写参数名称");
-			return;
+		var paramJson = JSON.parse(param);
+		if (paramJson.paramName == "") {
+		 alert("请填写参数名称");
+		 return;
 		}
-		if (param.testValue == "") {
-			alert("请填写默认值");
-			return;
+		if (paramJson.testValue == "") {
+		 alert("请填写默认值");
+		 return;
 		}
 	}
+	console.log(apiReturns);
+	console.log(apiParams);
 	$.ajax({
 		url : WebApplicationPath + "/api/add",
 		type : "post",
@@ -199,8 +203,8 @@ function addApi(){
 			apiDomain:apiDomain,
 			apiAddress:apiAddress,
 			apiDescribe:apiDescription,
-			apiParams:apiParams,
-			apiReturns:apiReturns
+			'apiParams[]':apiParams,
+			'apiReturns[]':apiReturns
 		},
 		success : function(result) {
 			
