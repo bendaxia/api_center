@@ -131,7 +131,7 @@ function addApi(){
 //		apiParam.testValue = td.eq(4).find("input").val();
 //		apiParam.paramDescribe = td.eq(5).find("input").val();
 //		apiParams.push(apiParam);
-		var apiParam = '{';
+		var apiParam ='{';
 			apiParam+='"paramName":"'+td.eq(1).find("input").val()+'",';
 			apiParam+='"paramType":"'+td.eq(2).find("select").val()+'",';
 			apiParam+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
@@ -153,11 +153,11 @@ function addApi(){
 //		apiReturn.returnDescribe = td2.eq(5).find("input").val();
 //		apiReturns.push(apiReturn);
 		var apiReturn = '{';
-			apiReturn+='"returnName":"'+td.eq(1).find("input").val()+'",';
-			apiReturn+='"returnType":"'+td.eq(2).find("select").val()+'",';
-//			apiReturn+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
-//			apiReturn+='"testValue":"'+td.eq(4).find("input").val()+'",';
-			apiReturn+='"returnDescribe":"'+td.eq(5).find("input").val()+'"';
+			apiReturn+='"returnName":"'+td2.eq(1).find("input").val()+'",';
+			apiReturn+='"returnType":"'+td2.eq(2).find("select").val()+'",';
+//			apiReturn+='"isoptional":"'+td2.eq(3).find("input:checked").val()+'",';
+//			apiReturn+='"testValue":"'+td2.eq(4).find("input").val()+'",';
+			apiReturn+='"returnDescribe":"'+td2.eq(5).find("input").val()+'"';
 			apiReturn+=' }';
 		apiReturns.push(apiReturn);
 	});
@@ -170,21 +170,21 @@ function addApi(){
 		alert("请将信息填写完整")
 		return;
 	}
-	if(apiParams.length==0){
-		alert("不要企图不填参数!");
-	}
-	for (i = 0; i < apiParams.length; i++) {
-		var param = apiParams[i];
-		var paramJson = JSON.parse(param);
-		if (paramJson.paramName == "") {
-		 alert("请填写参数名称");
-		 return;
-		}
-		if (paramJson.testValue == "") {
-		 alert("请填写默认值");
-		 return;
-		}
-	}
+//	if(apiParams.length==0){
+//		alert("不要企图不填参数!");
+//	}
+//	for (i = 0; i < apiParams.length; i++) {
+//		var param = apiParams[i];
+//		var paramJson = JSON.parse(param);
+//		if (paramJson.paramName == "") {
+//		 alert("请填写参数名称");
+//		 return;
+//		}
+//		if (paramJson.testValue == "") {
+//		 alert("请填写默认值");
+//		 return;
+//		}
+//	}
 	console.log(apiReturns);
 	console.log(apiParams);
 	$.ajax({
@@ -207,7 +207,11 @@ function addApi(){
 			'apiReturns[]':apiReturns
 		},
 		success : function(result) {
-			
+			if(result.code!=200){
+				alert(result.message);
+				return;
+			}
+			alert("成功");
 		}
 	});
 }

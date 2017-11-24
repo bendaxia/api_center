@@ -3,6 +3,7 @@ package com.apicenter.core.faced;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 			});
 			List<ApiCenterReturn> returns = new ArrayList<>();
 			apiReturns.forEach(areturn -> {
+				System.out.println(areturn);
 				ApiCenterReturn r = JsonUtils.toBean(areturn, ApiCenterReturn.class);
 				r.setApiId(apiCenterApi.getId());
 				returns.add(r);
@@ -47,11 +49,7 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 			this.apiService.addApiReturn(returns);
 		}
 	}
-public static void main(String[] args) {
-	String a ="{\"paramName\":\"124\",\"paramType\":\"整形\",\"isoptional\":\"0\",\"testValue\":\"124\",\"paramDescribe\":\"124\"}";
-	ApiCenterParam p = JsonUtils.toBean(a, ApiCenterParam.class);
-	System.out.println(p.toString());
-}
+
 	@Override
 	public void updateApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
 		if(this.apiService.updateApi(api)) {
