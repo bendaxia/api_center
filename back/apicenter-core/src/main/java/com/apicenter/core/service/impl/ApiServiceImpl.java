@@ -132,5 +132,10 @@ public class ApiServiceImpl implements ApiService{
 		query.createCriteria().andApiIdEqualTo(apiId);
 		return this.apiCenterParamDao.selectByExample(query);
 	}
+
+	@Override
+	public ApiCenterGroup getApiCenterGroup(int apiCenterGroupId) throws Exception {
+		return this.apiCenterGroupDao.selectByPrimaryKey(apiCenterGroupId);
+	}
 	
 }

@@ -24,6 +24,7 @@ function listWithGroup() {
 					}
 					$("#interfaceTypeId").html(interface_html);
 					initLeft();// 菜单效果
+					getApi();
 				}
 			});
 }
@@ -139,5 +140,102 @@ function delReturnTable() {
 	$("input[name='ch']:checked").each(function() {
 		n = $(this).parents("tr").index();
 		$("table#returnTableId").find("tr:eq(" + n + ")").remove();
+	});
+}
+
+/**
+ * 获取接口信息
+ * @returns
+ */
+function getApi(){
+	var apiId = getUrlParam('apiId');
+	$.ajax({
+		url : WebApplicationPath + "/api/api",
+		type : "post",
+		dataType : "json",
+		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		data : {
+			apiId:apiId
+		},
+		success : function(result) {
+			if(result.code!=Response_Code_OK){
+				alert(result.message);
+				return;
+			}
+			var api = result.data;
+			$("#inputEmail3").val(api.apiName);
+			$("#apiGroup").prepend("<option value='"+api.apiGroupId+"'>"+api.apiGroupName+"</option>");
+			$("#apiGroup").get(0).selectedIndex = 0;//显示出来			
+			$("#apiAgreement").prepend("<option>"+api.apiAgreement+"</option>");
+			$("#apiAgreement").get(0).selectedIndex = 0;//显示出来
+			$("#apiMode").prepend("<option>"+api.apiMode+"</option>");
+			$("#apiMode").get(0).selectedIndex = 0;//显示出来
+			$("#domain").prepend("<option>"+api.apiDomain+"</option>");
+			$("#domain").get(0).selectedIndex = 0;//显示出来
+			$("#address").val(api.apiAddress);
+			$("#description").val(api.apiDescribe);
+			
+			var paramTableId="";
+			paramTableId+=(
+					'<tr>'	+
+					'<th width="5%"></th>'+
+					'<th width="15%">名称</th>'+
+					'<th width="15%">类型</th>'+
+					'<th width="15%">是否可选</th>'+
+					'<th width="15%">默认值</th>'+
+					'<th width="30%">描述</th>'+
+					'</tr>'
+			);
+			for(var i=0;i<api.params.length;i++){
+				var p = api.params[i];
+				paramTableId+=
+						'<tr>'+
+						'<td><input type="checkbox" name="ch1" /></td>'+
+						'<td><input type="text" class="form-control" value='+p.paramName+' /></td>'+
+						'<td><select class="form-control"><option>'+p.paramType+'</option><option>整形</option><option>字符串</option><option>浮点</option><option>布尔</option></select></td>';
+				if(p.isoptional==0){
+					paramTableId+="<td><input name='Fruit"+row_count+"'  type='radio' value='0' checked/>是&nbsp;&nbsp;&nbsp;&nbsp;<input name='Fruit"+row_count+"' type='radio' value='1' />否</td>";
+				}else if(p.isoptional==1){
+					paramTableId+="<td><input name='Fruit"+row_count+"'  type='radio' value='0' />是&nbsp;&nbsp;&nbsp;&nbsp;<input name='Fruit"+row_count+"' type='radio' value='1' checked/>否</td>";
+				}
+				paramTableId+=
+						'<td><input type="text" class="form-control" value='+p.testValue+' /></td>'+
+						'<td><input type="text" class="form-control" value='+p.paramDescribe+' /></td>'+
+						'</tr>';
+				row_count++;	
+			} 
+			
+			var returnTableId ="";
+			returnTableId+=(
+					'<tr>'	+
+					'<th width="5%"></th>'+
+					'<th width="15%">名称</th>'+
+					'<th width="15%">类型</th>'+
+					'<th width="15%">是否可选</th>'+
+					'<th width="15%">默认值</th>'+
+					'<th width="30%">描述</th>'+
+					'</tr>'
+			);
+			for(var i=0;i<api.returns.length;i++){
+				var r = api.returns[i];
+				returnTableId+=
+				'<tr>'+
+				'<td><input type="checkbox" name="ch" /></td>'+
+				'<td><input type="text" class="form-control" value='+r.returnName+' /></td>'+
+				'<td><select class="form-control"><option>'+r.returnType+'</option><option>整形</option><option>字符串</option><option>浮点</option><option>布尔</option></select></td>';
+//				if(r.areoptional==0){
+					returnTableId+="<td><input name='Fruit2"+row_count+"'  type='radio' value='0' checked/>是&nbsp;&nbsp;&nbsp;&nbsp;<input name='Fruit2"+row_count+"' type='radio' value='1' />否</td>";
+//				}else if(r.areoptional==1){
+//					returnTableId+=
+//				"<td><input name='Fruit2"+row_count+"'  type='radio' value='0' />是&nbsp;&nbsp;&nbsp;&nbsp;<input name='Fruit2"+row_count+"' type='radio' value='1' checked/>否</td>";	
+//				}
+				returnTableId+='<td><input type="text" class="form-control" value="必返" /></td>'+
+				'<td><input type="text" class="form-control" value='+r.returnDescribe+' /></td>'+
+				'</tr>';
+				row_count++;
+			}
+			$("#paramTableId").html(paramTableId);
+			$("#returnTableId").html(returnTableId);
+		}
 	});
 }

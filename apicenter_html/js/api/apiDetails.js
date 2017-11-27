@@ -121,5 +121,5 @@ function getApi(){
  */
 function update(){
 	var id = getUrlParam('apiId');
-	window.location = "apiUpdate.html?id=" + id;
+	window.location = "apiUpdate.html?apiId=" + id;
 }

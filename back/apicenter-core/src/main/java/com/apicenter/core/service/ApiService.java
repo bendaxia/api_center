@@ -203,4 +203,17 @@ public interface ApiService {
 	 * @Description: TODO
 	 */
 	List<ApiCenterParam> listWithParam(int apiId)throws Exception;
+	
+	/**
+	 * 查询分组名
+	 * <p>
+	 * @param apiCenterGroupId
+	 * @return
+	 * @throws Exception 
+	 * @return ApiCenterGroup
+	 * @author ben
+	 * @date 2017年11月27日 下午4:14:41 
+	 * @Description: TODO
+	 */
+	ApiCenterGroup getApiCenterGroup(int apiCenterGroupId) throws Exception;
 }

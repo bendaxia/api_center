@@ -303,6 +303,8 @@ public class ApiController extends BaseController {
 			apiMap.putAll(map);
 			apiMap.put("returns", returns);
 			apiMap.put("params", params);
+			ApiCenterGroup apiCenterGroup = this.apiService.getApiCenterGroup(api.getApiGroupId());
+			apiMap.put("apiGroupName", apiCenterGroup.getGroupName());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("ApiController.api[api]");
