@@ -51,15 +51,6 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 		this.apiService.addApiReturn(returns);
 	}
 
-	public static void main(String[] args) {
-		List<String> apiParams = new ArrayList<>();
-		apiParams.add("{\"paramName\":\"1\"");
-		apiParams.forEach(param -> {
-			System.out.println(param);
-			ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
-		});
-	}
-
 	@Override
 	public void updateApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
 		if (this.apiService.updateApi(api)) {
