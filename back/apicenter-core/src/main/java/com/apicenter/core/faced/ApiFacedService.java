@@ -3,6 +3,8 @@ package com.apicenter.core.faced;
 import java.util.List;
 
 import com.apicenter.core.bean.ApiCenterApi;
+import com.apicenter.core.bean.ApiCenterParam;
+import com.apicenter.core.bean.ApiCenterReturn;
 
 /**
  * api业务封装接口
@@ -26,7 +28,7 @@ public interface ApiFacedService {
 	 * @date 2017年9月9日 下午5:04:31 
 	 * @Description: 添加api基础数据，并处理参数和返回数据
 	 */
-	void addApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception;
+	void addApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception;
 	
 	/**
 	 * 修改api

@@ -123,43 +123,43 @@ function addApi(){
 	tr.each(function(i, e) {
 		// 从tr拿到td
 		var td = $(this).find("td");
-//		var apiParam = {};
-		// 从td取值
-//		apiParam.paramName = td.eq(1).find("input").val();
-//		apiParam.paramType = td.eq(2).find("select").val();
-//		apiParam.isoptional = td.eq(3).find("input:checked").val();
-//		apiParam.testValue = td.eq(4).find("input").val();
-//		apiParam.paramDescribe = td.eq(5).find("input").val();
-//		apiParams.push(apiParam);
-		var apiParam ='{';
-			apiParam+='"paramName":"'+td.eq(1).find("input").val()+'",';
-			apiParam+='"paramType":"'+td.eq(2).find("select").val()+'",';
-			apiParam+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
-			apiParam+='"testValue":"'+td.eq(4).find("input").val()+'",';
-			apiParam+='"paramDescribe":"'+td.eq(5).find("input").val()+'"';
-		apiParam+=' }';
+		var apiParam = {};
+		 //从td取值
+		apiParam.paramName = td.eq(1).find("input").val();
+		apiParam.paramType = td.eq(2).find("select").val();
+		apiParam.isoptional = td.eq(3).find("input:checked").val();
+		apiParam.testValue = td.eq(4).find("input").val();
+		apiParam.paramDescribe = td.eq(5).find("input").val();
 		apiParams.push(apiParam);
+		
+//		var apiParam ='{';
+//			apiParam+='"paramName":"'+td.eq(1).find("input").val()+'",';
+//			apiParam+='"paramType":"'+td.eq(2).find("select").val()+'",';
+//			apiParam+='"isoptional":"'+td.eq(3).find("input:checked").val()+'",';
+//			apiParam+='"testValue":"'+td.eq(4).find("input").val()+'",';
+//			apiParam+='"paramDescribe":"'+td.eq(5).find("input").val()+'"';
+//		apiParam+=' }';
 	});
 	var apiReturns = [];
 	tr2.each(function(i, e) {
 		// 从tr拿到td
 		var td2 = $(this).find("td");
-//		var apiReturn = {};
-//		// 从td取值
-//		apiReturn.returnName = td2.eq(1).find("input").val();
-//		apiReturn.returnType = td2.eq(2).find("select").val();
-//		// otr.r_areoptional = td2.eq(3).find("input:checked").val();
-//		// otr.r_defaults = td2.eq(4).find("input").val();
-//		apiReturn.returnDescribe = td2.eq(5).find("input").val();
-//		apiReturns.push(apiReturn);
-		var apiReturn = '{';
-			apiReturn+='"returnName":"'+td2.eq(1).find("input").val()+'",';
-			apiReturn+='"returnType":"'+td2.eq(2).find("select").val()+'",';
-//			apiReturn+='"isoptional":"'+td2.eq(3).find("input:checked").val()+'",';
-//			apiReturn+='"testValue":"'+td2.eq(4).find("input").val()+'",';
-			apiReturn+='"returnDescribe":"'+td2.eq(5).find("input").val()+'"';
-			apiReturn+=' }';
+		var apiReturn = {};
+		// 从td取值
+		apiReturn.returnName = td2.eq(1).find("input").val();
+		apiReturn.returnType = td2.eq(2).find("select").val();
+		// otr.r_areoptional = td2.eq(3).find("input:checked").val();
+		// otr.r_defaults = td2.eq(4).find("input").val();
+		apiReturn.returnDescribe = td2.eq(5).find("input").val();
 		apiReturns.push(apiReturn);
+//		var apiReturn = '{';
+//			apiReturn+='"returnName":"'+td2.eq(1).find("input").val()+'",';
+//			apiReturn+='"returnType":"'+td2.eq(2).find("select").val()+'",';
+////			apiReturn+='"isoptional":"'+td2.eq(3).find("input:checked").val()+'",';
+////			apiReturn+='"testValue":"'+td2.eq(4).find("input").val()+'",';
+//			apiReturn+='"returnDescribe":"'+td2.eq(5).find("input").val()+'"';
+//			apiReturn+=' }';
+//		apiReturns.push(apiReturn);
 	});
 	if (apiGroupId == 0) {
 		alert("请选择接口类型");
@@ -203,8 +203,8 @@ function addApi(){
 			apiDomain:apiDomain,
 			apiAddress:apiAddress,
 			apiDescribe:apiDescription,
-			'apiParams[]':apiParams,
-			'apiReturns[]':apiReturns
+			apiParams:JSON.stringify(apiParams),
+			apiReturns:JSON.stringify(apiReturns)
 		},
 		success : function(result) {
 			if(result.code!=200){

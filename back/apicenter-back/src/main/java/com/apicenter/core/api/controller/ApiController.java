@@ -28,6 +28,7 @@ import com.apicenter.core.service.ApiService;
 import com.apicenter.user.bean.ApiCenterUser;
 import com.apicenter.user.service.UserService;
 import com.apicenter.util.bean.BeanUtils;
+import com.apicenter.util.json.JsonUtils;
 
 @Controller
 @RequestMapping("api")
@@ -111,8 +112,8 @@ public class ApiController extends BaseController {
 			@RequestParam(value = "apiDomain", required = true) String apiDomain,
 			@RequestParam(value = "apiAddress", required = true) String apiAddress,
 			@RequestParam(value = "apiDescribe", required = true) String apiDescribe,
-			@RequestParam(value = "apiParams[]", required = false) List<String> apiParams,
-			@RequestParam(value = "apiReturns[]", required = false) List<String> apiReturns) {
+			@RequestParam(value = "apiParams", required = false) String apiParams,
+			@RequestParam(value = "apiReturns", required = false) String apiReturns) {
 		int userId = getUserId(request);
 		try {
 			ApiCenterApi api = new ApiCenterApi();
@@ -124,10 +125,13 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
-			System.out.println("apiParams...."+apiParams);
 			System.out.println("apiParams.toString()...."+apiParams.toString());
 			System.out.println("apiReturns.toString()...."+apiReturns.toString());
-			this.apiFacedService.addApi(api, apiReturns, apiParams);
+			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
+			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiReturns, ApiCenterParam.class);
+			System.out.println(aReturns.toString());
+			System.out.println(aParams.toString());
+			this.apiFacedService.addApi(api, aReturns, aParams);
 			// 问题:想办法支持header 和 cookie 2017 09 08
 
 			// 解决:header 和 cookie 在模拟请求的时候自行添加 2017 09 12

@@ -27,28 +27,19 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 	private ApiService apiService;
 
 	@Override
-	public void addApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
+	public void addApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception {
 		ApiCenterApi apiCenterApi = this.apiService.addApi(api);
 		if (apiCenterApi == null) {
 			return;
 		}
-		System.out.println("toString-------" + apiParams.toString());
-		List<ApiCenterParam> params = new ArrayList<>();
 		apiParams.forEach(param -> {
-			System.out.println(param);
-//			ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
-//			p.setApiId(apiCenterApi.getId());
-//			params.add(p);
+			param.setApiId(apiCenterApi.getId());
 		});
-		List<ApiCenterReturn> returns = new ArrayList<>();
 		apiReturns.forEach(areturn -> {
-			System.out.println(areturn);
-			ApiCenterReturn r = JsonUtils.toBean(areturn, ApiCenterReturn.class);
-			r.setApiId(apiCenterApi.getId());
-			returns.add(r);
+			areturn.setApiId(apiCenterApi.getId());
 		});
-		this.apiService.addApiParam(params);
-		this.apiService.addApiReturn(returns);
+		this.apiService.addApiParam(apiParams);
+		this.apiService.addApiReturn(apiReturns);
 	}
 
 	@Override
