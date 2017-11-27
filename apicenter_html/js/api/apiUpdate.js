@@ -316,7 +316,7 @@ function updateApi(){
 			apiReturns:JSON.stringify(apiReturns)
 		},
 		success : function(result) {
-			if(result.code!=200){
+			if(result.code!=Response_Code_OK){
 				alert(result.message);
 				return;
 			}
