@@ -320,7 +320,7 @@ function updateApi(){
 				alert(result.message);
 				return;
 			}
-			alert("成功");
+			window.location = "apiDetails.html?apiId=" + getUrlParam('apiId');
 		}
 	});
 }
