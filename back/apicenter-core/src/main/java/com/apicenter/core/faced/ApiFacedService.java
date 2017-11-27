@@ -42,5 +42,5 @@ public interface ApiFacedService {
 	 * @date 2017年9月12日 下午2:35:57 
 	 * @Description: TODO
 	 */
-	void updateApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception;
+	void updateApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception;
 }

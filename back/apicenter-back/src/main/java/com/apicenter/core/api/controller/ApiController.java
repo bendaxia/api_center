@@ -170,8 +170,8 @@ public class ApiController extends BaseController {
 			@RequestParam(value = "apiDomain", required = true) String apiDomain,
 			@RequestParam(value = "apiAddress", required = true) String apiAddress,
 			@RequestParam(value = "apiDescribe", required = true) String apiDescribe,
-			@RequestParam(value = "apiParams[]", required = false) List<String> apiParams,
-			@RequestParam(value = "apiReturns[]", required = false) List<String> apiReturns) {
+			@RequestParam(value = "apiParams", required = false) String apiParams,
+			@RequestParam(value = "apiReturns", required = false) String apiReturns) {
 		int userId = getUserId(request);
 		try {
 			ApiCenterApi api = this.apiService.getApi(apiId);
@@ -181,6 +181,7 @@ public class ApiController extends BaseController {
 			if (api.getFounderUserId() != userId) {
 				return Response.fail("这个接口不是你管理,请找相关人员修改管理人");
 			}
+			api.setId(apiId);
 			api.setApiName(apiName);
 			api.setApiGroupId(apiGruopId);
 			api.setApiAgreement(apiAgreement);
@@ -189,7 +190,9 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
-			this.apiFacedService.updateApi(api, apiReturns, apiParams);
+			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
+			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
+			this.apiFacedService.updateApi(api, aReturns, aParams);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("ApiController.updateApi[修改api],参数:userId:" + userId);

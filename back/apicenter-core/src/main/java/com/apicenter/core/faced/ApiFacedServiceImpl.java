@@ -1,6 +1,5 @@
 package com.apicenter.core.faced;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import com.apicenter.core.bean.ApiCenterApi;
 import com.apicenter.core.bean.ApiCenterParam;
 import com.apicenter.core.bean.ApiCenterReturn;
 import com.apicenter.core.service.ApiService;
-import com.apicenter.util.json.JsonUtils;
 
 /**
  * api业务封装实现类
@@ -43,25 +41,20 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 	}
 
 	@Override
-	public void updateApi(ApiCenterApi api, List<String> apiReturns, List<String> apiParams) throws Exception {
-		if (this.apiService.updateApi(api)) {
+	public void updateApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception {
+		if (!this.apiService.updateApi(api)) {
+			return;
+		}
 			this.apiService.delApiReturn(api.getId());
 			this.apiService.delApiParam(api.getId());
-			List<ApiCenterParam> params = new ArrayList<>();
 			apiParams.forEach(param -> {
-				ApiCenterParam p = JsonUtils.toBean(param, ApiCenterParam.class);
-				p.setApiId(api.getId());
-				params.add(p);
+				param.setApiId(api.getId());
 			});
-			List<ApiCenterReturn> returns = new ArrayList<>();
 			apiReturns.forEach(areturn -> {
-				ApiCenterReturn r = JsonUtils.toBean(areturn, ApiCenterReturn.class);
-				r.setApiId(api.getId());
-				returns.add(r);
+				areturn.setApiId(api.getId());
 			});
-			this.apiService.addApiParam(params);
-			this.apiService.addApiReturn(returns);
-		}
+			this.apiService.addApiParam(apiParams);
+			this.apiService.addApiReturn(apiReturns);
 	}
 
 }
