@@ -125,12 +125,8 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
-			System.out.println("apiParams.toString()...."+apiParams.toString());
-			System.out.println("apiReturns.toString()...."+apiReturns.toString());
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
 			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
-			System.out.println(aReturns.toString());
-			System.out.println(aParams.toString());
 			this.apiFacedService.addApi(api, aReturns, aParams);
 			// 问题:想办法支持header 和 cookie 2017 09 08
 
