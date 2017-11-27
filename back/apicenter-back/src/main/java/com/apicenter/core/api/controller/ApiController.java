@@ -128,7 +128,7 @@ public class ApiController extends BaseController {
 			System.out.println("apiParams.toString()...."+apiParams.toString());
 			System.out.println("apiReturns.toString()...."+apiReturns.toString());
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
-			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiReturns, ApiCenterParam.class);
+			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
 			System.out.println(aReturns.toString());
 			System.out.println(aParams.toString());
 			this.apiFacedService.addApi(api, aReturns, aParams);
