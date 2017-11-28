@@ -93,6 +93,7 @@ public class HttpUtils {
 					for (String key : headers.keySet()) {
 						System.out.println(key + "\t：\t" + headers.get(key));
 					}
+					System.out.println(httpConn.getDefaultUseCaches());
 		return result;
 	}
 
