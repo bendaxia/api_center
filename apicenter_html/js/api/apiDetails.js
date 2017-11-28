@@ -123,3 +123,65 @@ function update(){
 	var id = getUrlParam('apiId');
 	window.location = "apiUpdate.html?apiId=" + id;
 }
+
+/**
+ * 请求
+ * @returns
+ */
+function send(){
+//	var domain = $("#domainId").html();
+//	var address = $("#addressId").html();
+//	var manner = $("#mannerId").html();
+//	var headers = $("#header").val().split("\n");//获取header 在转换为数组
+//	var contentType=getContentType(headers);
+//	// 取第一个table
+//	var tableid = $('#pid');
+//	// 从table拿到tr
+//	var tr = tableid.find('tr:gt(0)');
+//
+//	if (tr.html() != null && tr.html() != "") {
+//		var P_obj = [];
+//		tr.each(function(i, e) {
+//			var otr = {};
+//			// 从tr拿到td
+//			var td = $(this).find("td");
+//			// 从td取值
+//			otr.p_name = td.eq(0).html();
+//			otr.p_defaults = td.eq(3).find("input").val();
+//			// otr.p_defaults = td.eq(3).html();
+//			P_obj.push(otr);
+//		});
+//		otr.p_obj = P_obj;
+//	}
+//	var jsonData = JSON.stringify(otr);
+	
+//	$.ajax({
+//		url : domain + address,
+//		type : manner,
+//		dataType : "json",
+//		contentType: contentType,
+//		beforeSend : function(xhr){
+//			for(var i=0;i<headers.length;i++){
+//				var header = headers[i];
+//				var key = header.split(":")[0];
+//				var value = header.split(":")[1];
+//				xhr.setRequestHeader('"'+key+'"','"'+value+'"');
+//			}
+//		},
+//		data : {
+//		},
+//		success : function(result) {
+//			
+//		}
+//	});
+}
+//function getContentType(headers){
+//	for(var i=0;i<headers.length;i++){
+//		var header = headers[i];
+//		var key = header.split(":")[0];
+//		var value = header.split(":")[1];
+//		if(key=="Content-Type"){
+//			return value;
+//		}
+//	}
+//}

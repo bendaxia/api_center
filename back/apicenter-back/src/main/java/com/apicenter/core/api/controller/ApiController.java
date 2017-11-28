@@ -316,4 +316,10 @@ public class ApiController extends BaseController {
 		return Response.ok(apiMap, "成功");
 	}
 
+	@RequestMapping(value = "send", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	@ResponseBody
+	public String send(HttpServletRequest request) {
+		request.getHeaderNames();
+		return null;
+	}
 }
