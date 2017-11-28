@@ -25,7 +25,8 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 	private ApiService apiService;
 
 	@Override
-	public void addApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception {
+	public void addApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams)
+			throws Exception {
 		ApiCenterApi apiCenterApi = this.apiService.addApi(api);
 		if (apiCenterApi == null) {
 			return;
@@ -41,20 +42,21 @@ public class ApiFacedServiceImpl implements ApiFacedService {
 	}
 
 	@Override
-	public void updateApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams) throws Exception {
+	public void updateApi(ApiCenterApi api, List<ApiCenterReturn> apiReturns, List<ApiCenterParam> apiParams)
+			throws Exception {
 		if (!this.apiService.updateApi(api)) {
 			return;
 		}
-			this.apiService.delApiReturn(api.getId());
-			this.apiService.delApiParam(api.getId());
-			apiParams.forEach(param -> {
-				param.setApiId(api.getId());
-			});
-			apiReturns.forEach(areturn -> {
-				areturn.setApiId(api.getId());
-			});
-			this.apiService.addApiParam(apiParams);
-			this.apiService.addApiReturn(apiReturns);
+		this.apiService.delApiReturn(api.getId());
+		this.apiService.delApiParam(api.getId());
+		apiParams.forEach(param -> {
+			param.setApiId(api.getId());
+		});
+		apiReturns.forEach(areturn -> {
+			areturn.setApiId(api.getId());
+		});
+		this.apiService.addApiParam(apiParams);
+		this.apiService.addApiReturn(apiReturns);
 	}
 
 }
