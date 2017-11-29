@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -350,10 +349,5 @@ public class ApiController extends BaseController {
 			logger.error("ApiController.send[模拟请求]");
 			return Response.error();
 		}
-	}
-	public static void main(String[] args) {
-		String parameter = "{\"参数1\":\"0\",\"参数2\":\"0\"};";
-		Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
-		System.out.println(parameters.get("参数1"));
 	}
 }

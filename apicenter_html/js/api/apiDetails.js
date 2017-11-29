@@ -148,7 +148,11 @@ function send(){
 			manner:manner
 		},
 		success : function(result) {
-			alert(result);
+			if(result.code!=200){
+				alert(result.message);
+				return;
+			}
+			
 		}
 	});
 }

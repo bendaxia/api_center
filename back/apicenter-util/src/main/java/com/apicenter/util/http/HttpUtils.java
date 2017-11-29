@@ -26,7 +26,6 @@ public class HttpUtils {
 		BufferedReader in = null;// 读取响应输入流
 		StringBuffer sb = new StringBuffer();// 存储参数
 		String params = "";// 编码之后的参数
-		HttpResult httpResult = null;// 返回对象
 		java.net.HttpURLConnection httpConn = null;
 		try {
 			// 编码请求参数
@@ -67,8 +66,6 @@ public class HttpUtils {
 			while ((line = in.readLine()) != null) {
 				result += line;
 			}
-			httpResult = getHttpResult(httpConn, requestHeaders);
-			httpResult.setResult(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -80,6 +77,8 @@ public class HttpUtils {
 				ex.printStackTrace();
 			}
 		}
+		HttpResult httpResult = getHttpResult(httpConn, requestHeaders);
+		httpResult.setResult(result);
 		return httpResult;
 	}
 
@@ -98,7 +97,7 @@ public class HttpUtils {
 		PrintWriter out = null;
 		StringBuffer sb = new StringBuffer();// 处理请求参数
 		String params = "";// 编码之后的参数
-		HttpResult httpResult = null;// 返回对象
+		java.net.HttpURLConnection httpConn = null;
 		try {
 			// 编码请求参数
 			if(parameters.size()>0) {
@@ -119,7 +118,7 @@ public class HttpUtils {
 			// 创建URL对象
 			java.net.URL connURL = new java.net.URL(url);
 			// 打开URL连接
-			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			// 设置通用属性
 			httpConn.setRequestProperty("Accept", "*/*");
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
@@ -144,8 +143,6 @@ public class HttpUtils {
 			while ((line = in.readLine()) != null) {
 				result += line;
 			}
-			httpResult = getHttpResult(httpConn, requestHeaders);
-			httpResult.setResult(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -160,6 +157,8 @@ public class HttpUtils {
 				ex.printStackTrace();
 			}
 		}
+		HttpResult httpResult = getHttpResult(httpConn, requestHeaders);
+		httpResult.setResult(result);
 		return httpResult;
 	}
 
@@ -249,7 +248,8 @@ public class HttpUtils {
 	 */
 	public static void main(String[] args) {
 		 Map<String, String> parameters = new HashMap<String, String>();
-		 parameters.put("的", "sarin");
-		 System.out.println(send("POST","http://test.allxiu.com/list",parameters,null));
+		 parameters.put("page", "1");
+		 parameters.put("cityId", "1");
+		 System.out.println(send("GET","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null).getGeneral().toString());
 	}
 }
