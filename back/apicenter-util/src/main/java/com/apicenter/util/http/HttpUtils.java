@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.apicenter.util.http.bean.HttpResult;
 
 public class HttpUtils {
 	/**
@@ -18,12 +21,13 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	public static String sendGet(String url, Map<String, String> parameters) {
+	public static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";
 		BufferedReader in = null;// 读取响应输入流
 		StringBuffer sb = new StringBuffer();// 存储参数
 		String params = "";// 编码之后的参数
-		java.net.HttpURLConnection httpConn=null;
+		HttpResult httpResult = null;// 返回对象
+		java.net.HttpURLConnection httpConn = null;
 		try {
 			// 编码请求参数
 			if (parameters.size() == 1) {
@@ -40,7 +44,6 @@ public class HttpUtils {
 				params = temp_params.substring(0, temp_params.length() - 1);
 			}
 			String full_url = url + "?" + params;
-			System.out.println(full_url);
 			// 创建URL对象
 			java.net.URL connURL = new java.net.URL(full_url);
 			// 打开URL连接
@@ -49,25 +52,12 @@ public class HttpUtils {
 			httpConn.setRequestProperty("Accept", "*/*");
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
 			httpConn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+			// 设置用户自定义的请求头
+			for (String key : requestHeaders.keySet()) {
+				httpConn.setRequestProperty(key, requestHeaders.get(key));
+			}
 			// 建立实际的连接
 			httpConn.connect();
-//			// 响应头部获取
-//			Map<String, List<String>> headers = httpConn.getHeaderFields();
-//			// 遍历所有的响应头字段
-//			for (String key : headers.keySet()) {
-//				System.out.println(key + "\t：\t" + headers.get(key));
-//			}
-//			System.out.println("请求url的响应状态码:"+httpConn.getResponseCode());  
-//			StringBuffer strBuffer = new StringBuffer(); 
-//			InputStream inputStream = httpConn.getInputStream();  
-//            BufferedReader rufferedReader  = new BufferedReader(new InputStreamReader(  
-//                    inputStream,"utf-8"));  
-//            String str = null;  
-//            while ((str = rufferedReader.readLine()) != null) {  
-//                strBuffer.append(str);  
-//                strBuffer.append("\r\n");  
-//            }   
-//            System.out.println(strBuffer); 
 			// 定义BufferedReader输入流来读取URL的响应,并设置编码方式
 			in = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
 			String line;
@@ -75,6 +65,8 @@ public class HttpUtils {
 			while ((line = in.readLine()) != null) {
 				result += line;
 			}
+			httpResult = getHttpResult(httpConn, requestHeaders);
+			httpResult.setResult(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -86,15 +78,7 @@ public class HttpUtils {
 				ex.printStackTrace();
 			}
 		}
-		
-		// 响应头部获取
-					Map<String, List<String>> headers = httpConn.getHeaderFields();
-					// 遍历所有的响应头字段
-					for (String key : headers.keySet()) {
-						System.out.println(key + "\t：\t" + headers.get(key));
-					}
-					System.out.println(httpConn.getDefaultUseCaches());
-		return result;
+		return httpResult;
 	}
 
 	/**
@@ -106,12 +90,13 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	public static String sendPost(String url, Map<String, String> parameters) {
+	public static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";// 返回的结果
 		BufferedReader in = null;// 读取响应输入流
 		PrintWriter out = null;
 		StringBuffer sb = new StringBuffer();// 处理请求参数
 		String params = "";// 编码之后的参数
+		HttpResult httpResult = null;// 返回对象
 		try {
 			// 编码请求参数
 			if (parameters.size() == 1) {
@@ -135,6 +120,10 @@ public class HttpUtils {
 			httpConn.setRequestProperty("Accept", "*/*");
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
 			httpConn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+			// 设置用户自定义的请求头
+			for (String key : requestHeaders.keySet()) {
+				httpConn.setRequestProperty(key, requestHeaders.get(key));
+			}
 			// 设置POST方式
 			httpConn.setDoInput(true);
 			httpConn.setDoOutput(true);
@@ -151,6 +140,8 @@ public class HttpUtils {
 			while ((line = in.readLine()) != null) {
 				result += line;
 			}
+			httpResult = getHttpResult(httpConn, requestHeaders);
+			httpResult.setResult(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -165,7 +156,50 @@ public class HttpUtils {
 				ex.printStackTrace();
 			}
 		}
-		return result;
+		return httpResult;
+	}
+
+	/**
+	 * 处理返回数据
+	 * <p>
+	 * 
+	 * @param httpConn
+	 * @param requestHeaders
+	 * @return
+	 * @return HttpResult
+	 * @author ben
+	 * @date 2017年11月29日 下午4:15:54
+	 * @Description: TODO
+	 */
+	private static HttpResult getHttpResult(java.net.HttpURLConnection httpConn, Map<String, String> requestHeaders) {
+		HttpResult httpResult = new HttpResult();
+		try {
+			// 响应头部获取
+			Map<String, List<String>> headers = httpConn.getHeaderFields();
+			List<String> responseHeaders = new ArrayList<String>();
+			// 遍历所有的响应头处理要返回的对象
+			for (String key : headers.keySet()) {
+				String responseHeader = key + ":>>>" + headers.get(key);
+				responseHeaders.add(responseHeader);
+			}
+			httpResult.setResponseHeaders(responseHeaders);
+			List<String> requestHeadersList = new ArrayList<String>();
+			// 遍历自定义请求头处理要返回的对象
+			for (String key : requestHeaders.keySet()) {
+				String requestHeader = key + ":>>>" + requestHeaders.get(key);
+				requestHeadersList.add(requestHeader);
+			}
+			httpResult.setRequestHeaders(requestHeadersList);
+			List<String> generals = new ArrayList<>();
+			generals.add("Request URL:>>>" + httpConn.getURL());
+			generals.add("Request Method:>>>" + httpConn.getRequestMethod() + "   " + "HTTP/1.1");
+			generals.add("Status Code:>>>" + httpConn.getResponseCode() + "   " + httpConn.getResponseMessage());
+			httpResult.setGeneral(generals);
+			return httpResult;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return httpResult;
 	}
 
 	/**
@@ -176,7 +210,8 @@ public class HttpUtils {
 	public static void main(String[] args) {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("name", "sarin");
-		String result = sendGet("http://www.baidu.com", parameters);
-		System.out.println(result);
+		Map<String, String> requestHeaders = new HashMap<String, String>();
+		requestHeaders.put("name", "sarin");
+		System.out.println(sendPost("http://www.baidu.com", parameters, requestHeaders).getResult());
 	}
 }
