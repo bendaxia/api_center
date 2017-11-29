@@ -20,6 +20,12 @@ public class HttpResult {
 	 */
 	List<String> general;
 
+	@Override
+	public String toString() {
+		return "HttpResult [result=" + result + ", responseHeaders=" + responseHeaders + ", requestHeaders="
+				+ requestHeaders + ", general=" + general + "]";
+	}
+
 	public String getResult() {
 		return result;
 	}

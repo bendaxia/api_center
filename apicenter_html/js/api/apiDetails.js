@@ -148,11 +148,34 @@ function send(){
 			manner:manner
 		},
 		success : function(result) {
-			if(result.code!=200){
+			if(result.code!=Response_Code_OK){
 				alert(result.message);
 				return;
 			}
+			var a = result.data.result;
+			var c = document.createElement('div');
+			c.innerHTML = a;
+			a = c.innerText || c.textContent;
+			c = null;
+			a = jQuery.parseJSON(a);
+			json = JSON.stringify(a);
+			json = formatJson(json);
 			
+			var header ="General:\n";
+			for(var i=0;i<result.data.general.length;i++){
+				header+=result.data.general[i]+"\n";
+			}
+			header += "\nRequest Header:\n";
+			for(var i=0;i<result.data.requestHeaders.length;i++){
+				header+=result.data.requestHeaders[i]+"\n";
+			}
+			header += "\nResponse Header:\n";
+			for(var i=0;i<result.data.responseHeaders.length;i++){
+				header+=result.data.responseHeaders[i]+"\n";
+			}
+			$("#jsonId").html(json);
+			$("#proId").html(header);
+			$("#yuanId").html(result.data.result);
 		}
 	});
 }
@@ -183,4 +206,70 @@ function getParameterJson(){
 	}
 	var json = JSON.stringify(otr);
 	return json;
+}
+function repeat(s, count) {
+	return new Array(count + 1).join(s);
+}
+
+function formatJson(json) {
+
+	var json = json;
+
+	var i = 0, len = 0, tab = "    ", targetJson = "", indentLevel = 0, inString = false, currentChar = null;
+
+	for (i = 0, len = json.length; i < len; i += 1) {
+		currentChar = json.charAt(i);
+
+		switch (currentChar) {
+		case '{':
+		case '[':
+			if (!inString) {
+				targetJson += currentChar + "\n" + repeat(tab, indentLevel + 1);
+				indentLevel += 1;
+			} else {
+				targetJson += currentChar;
+			}
+			break;
+		case '}':
+		case ']':
+			if (!inString) {
+				indentLevel -= 1;
+				targetJson += "\n" + repeat(tab, indentLevel) + currentChar;
+			} else {
+				targetJson += currentChar;
+			}
+			break;
+		case ',':
+			if (!inString) {
+				targetJson += ",\n" + repeat(tab, indentLevel);
+			} else {
+				targetJson += currentChar;
+			}
+			break;
+		case ':':
+			if (!inString) {
+				targetJson += ": ";
+			} else {
+				targetJson += currentChar;
+			}
+			break;
+		case ' ':
+		case "\n":
+		case "\t":
+			if (inString) {
+				targetJson += currentChar;
+			}
+			break;
+		case '"':
+			if (i > 0 && json.charAt(i - 1) !== '\\') {
+				inString = !inString;
+			}
+			targetJson += currentChar;
+			break;
+		default:
+			targetJson += currentChar;
+			break;
+		}
+	}
+	return targetJson;
 }

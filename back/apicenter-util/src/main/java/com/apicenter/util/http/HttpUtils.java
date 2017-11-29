@@ -250,6 +250,6 @@ public class HttpUtils {
 		 Map<String, String> parameters = new HashMap<String, String>();
 		 parameters.put("page", "1");
 		 parameters.put("cityId", "1");
-		 System.out.println(send("GET","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null).getGeneral().toString());
+		 System.out.println(send("POST","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null));
 	}
 }
