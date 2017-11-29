@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ import com.apicenter.user.bean.ApiCenterUser;
 import com.apicenter.user.service.UserService;
 import com.apicenter.util.bean.BeanUtils;
 import com.apicenter.util.http.HttpUtils;
+import com.apicenter.util.http.bean.HttpResult;
 import com.apicenter.util.json.JsonUtils;
 
 @Controller
@@ -333,16 +335,25 @@ public class ApiController extends BaseController {
 	@ResponseBody
 	public String send(@RequestParam(value = "parameter", required = true)String parameter,
 			@RequestParam(value = "url", required = true) String url,
-			@RequestParam(value = "requestHeader", required = true) String requestHeader) {
+			@RequestParam(value = "requestHeader", required = true) String requestHeader,
+			@RequestParam(value = "manner", required = true) String manner) {
 		try {
 			Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
 			Map<String,String> requestHeaders = JsonUtils.toBean(requestHeader, Map.class);
-			return Response.ok(HttpUtils.sendGet(url, parameters, requestHeaders), "ok");
+			HttpResult httpResult = HttpUtils.send(manner,url, parameters, requestHeaders);
+			if(httpResult==null) {
+				return Response.fail("请求失败,请检查");
+			}
+			return Response.ok(httpResult, "ok");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("ApiController.send[模拟请求]");
 			return Response.error();
 		}
 	}
-
+	public static void main(String[] args) {
+		String parameter = "{\"参数1\":\"0\",\"参数2\":\"0\"};";
+		Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
+		System.out.println(parameters.get("参数1"));
+	}
 }

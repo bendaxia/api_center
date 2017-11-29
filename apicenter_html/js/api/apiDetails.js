@@ -129,59 +129,54 @@ function update(){
  * @returns
  */
 function send(){
-//	var domain = $("#domainId").html();
-//	var address = $("#addressId").html();
-//	var manner = $("#mannerId").html();
-//	var headers = $("#header").val().split("\n");//获取header 在转换为数组
-//	var contentType=getContentType(headers);
-//	// 取第一个table
-//	var tableid = $('#pid');
-//	// 从table拿到tr
-//	var tr = tableid.find('tr:gt(0)');
-//
-//	if (tr.html() != null && tr.html() != "") {
-//		var P_obj = [];
-//		tr.each(function(i, e) {
-//			var otr = {};
-//			// 从tr拿到td
-//			var td = $(this).find("td");
-//			// 从td取值
-//			otr.p_name = td.eq(0).html();
-//			otr.p_defaults = td.eq(3).find("input").val();
-//			// otr.p_defaults = td.eq(3).html();
-//			P_obj.push(otr);
-//		});
-//		otr.p_obj = P_obj;
-//	}
-//	var jsonData = JSON.stringify(otr);
-	
-//	$.ajax({
-//		url : domain + address,
-//		type : manner,
-//		dataType : "json",
-//		contentType: contentType,
-//		beforeSend : function(xhr){
-//			for(var i=0;i<headers.length;i++){
-//				var header = headers[i];
-//				var key = header.split(":")[0];
-//				var value = header.split(":")[1];
-//				xhr.setRequestHeader('"'+key+'"','"'+value+'"');
-//			}
-//		},
-//		data : {
-//		},
-//		success : function(result) {
-//			
-//		}
-//	});
+	var domain = $("#domainId").html();
+	var address = $("#addressId").html();
+	var headers = $("#header").val().split("\n");//获取header 在转换为数组
+	var url = domain+address;
+	var manner = $("#mannerId").html();
+	var headersJson = getHeadersJson(headers);
+	var parameterJson = getParameterJson();
+	$.ajax({
+		url : WebApplicationPath + "/api/send",
+		type : "post",
+		dataType : "json",
+		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		data : {
+			url:url,
+			parameter:parameterJson,
+			requestHeader:headersJson,
+			manner:manner
+		},
+		success : function(result) {
+			alert(result);
+		}
+	});
 }
-//function getContentType(headers){
-//	for(var i=0;i<headers.length;i++){
-//		var header = headers[i];
-//		var key = header.split(":")[0];
-//		var value = header.split(":")[1];
-//		if(key=="Content-Type"){
-//			return value;
-//		}
-//	}
-//}
+function getHeadersJson(headers){
+	var headerObj = new Object();
+	for(var i=0;i<headers.length;i++){
+		var header = headers[i];
+		var key = header.split(":")[0];
+		var value = header.split(":")[1];
+		headerObj[key] = value;
+	}
+	var json = JSON.stringify(headerObj);
+	return json;
+}
+function getParameterJson(){
+	// 取第一个table
+	var tableid = $('#pid');
+	// 从table拿到tr
+	var tr = tableid.find('tr:gt(0)');
+	var otr = new Object();
+	if (tr.html() != null && tr.html() != "") {
+		tr.each(function(i, e) {
+			// 从tr拿到td
+			var td = $(this).find("td");
+			// 从td取值
+			otr[td.eq(0).html()] = td.eq(3).find("input").val();
+		});
+	}
+	var json = JSON.stringify(otr);
+	return json;
+}

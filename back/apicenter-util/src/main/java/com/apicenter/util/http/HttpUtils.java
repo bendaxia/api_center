@@ -21,7 +21,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	public static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
+	private static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";
 		BufferedReader in = null;// 读取响应输入流
 		StringBuffer sb = new StringBuffer();// 存储参数
@@ -30,18 +30,20 @@ public class HttpUtils {
 		java.net.HttpURLConnection httpConn = null;
 		try {
 			// 编码请求参数
-			if (parameters.size() == 1) {
-				for (String name : parameters.keySet()) {
-					sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"));
+			if(parameters.size()>0) {
+				if (parameters.size() == 1) {
+					for (String name : parameters.keySet()) {
+						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"));
+					}
+					params = sb.toString();
+				} else {
+					for (String name : parameters.keySet()) {
+						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"))
+								.append("&");
+					}
+					String temp_params = sb.toString();
+					params = temp_params.substring(0, temp_params.length() - 1);
 				}
-				params = sb.toString();
-			} else {
-				for (String name : parameters.keySet()) {
-					sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"))
-							.append("&");
-				}
-				String temp_params = sb.toString();
-				params = temp_params.substring(0, temp_params.length() - 1);
 			}
 			String full_url = url + "?" + params;
 			// 创建URL对象
@@ -90,7 +92,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	public static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
+	private static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";// 返回的结果
 		BufferedReader in = null;// 读取响应输入流
 		PrintWriter out = null;
@@ -99,18 +101,20 @@ public class HttpUtils {
 		HttpResult httpResult = null;// 返回对象
 		try {
 			// 编码请求参数
-			if (parameters.size() == 1) {
-				for (String name : parameters.keySet()) {
-					sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"));
+			if(parameters.size()>0) {
+				if (parameters.size() == 1) {
+					for (String name : parameters.keySet()) {
+						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"));
+					}
+					params = sb.toString();
+				} else {
+					for (String name : parameters.keySet()) {
+						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"))
+								.append("&");
+					}
+					String temp_params = sb.toString();
+					params = temp_params.substring(0, temp_params.length() - 1);
 				}
-				params = sb.toString();
-			} else {
-				for (String name : parameters.keySet()) {
-					sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"))
-							.append("&");
-				}
-				String temp_params = sb.toString();
-				params = temp_params.substring(0, temp_params.length() - 1);
 			}
 			// 创建URL对象
 			java.net.URL connURL = new java.net.URL(url);
@@ -203,15 +207,49 @@ public class HttpUtils {
 	}
 
 	/**
-	 * 主函数，测试请求
+	 * send
+	 * <p>
 	 * 
+	 * @param manner
+	 * @param url
+	 * @param parameters
+	 * @param requestHeaders
+	 * @return
+	 * @return HttpResult
+	 * @author ben
+	 * @date 2017年11月29日 下午5:22:15
+	 * @Description: TODO
+	 */
+	public static HttpResult send(String manner, String url, Map<String, String> parameters,
+			Map<String, String> requestHeaders) {
+		if (requestHeaders == null) {
+			requestHeaders = new HashMap<>();
+		}
+		if (parameters == null) {
+			parameters = new HashMap<>();
+		}
+		HttpResult httpResult = new HttpResult();
+		switch (manner) {
+		case "POST":
+			httpResult = sendPost(url, parameters, requestHeaders);
+			break;
+		case "GET":
+			httpResult = sendGet(url, parameters, requestHeaders);
+			break;
+		default:
+			break;
+		}
+		return httpResult;
+	}
+
+	/**
+	 * 主函数，测试请求
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("name", "sarin");
-		Map<String, String> requestHeaders = new HashMap<String, String>();
-		requestHeaders.put("name", "sarin");
-		System.out.println(sendPost("http://www.baidu.com", parameters, requestHeaders).getResult());
+		 Map<String, String> parameters = new HashMap<String, String>();
+		 parameters.put("的", "sarin");
+		 System.out.println(send("POST","http://test.allxiu.com/list",parameters,null));
 	}
 }
