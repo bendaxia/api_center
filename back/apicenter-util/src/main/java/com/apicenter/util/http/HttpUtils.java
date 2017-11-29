@@ -135,7 +135,7 @@ public class HttpUtils {
 			// 发送请求参数
 			out.write(params);
 			// flush输出流的缓冲
-			out.flush();
+			out.flush(); 
 			// 定义BufferedReader输入流来读取URL的响应，设置编码方式
 			in = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
 			String line;
