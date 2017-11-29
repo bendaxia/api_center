@@ -28,6 +28,7 @@ import com.apicenter.core.service.ApiService;
 import com.apicenter.user.bean.ApiCenterUser;
 import com.apicenter.user.service.UserService;
 import com.apicenter.util.bean.BeanUtils;
+import com.apicenter.util.http.HttpUtils;
 import com.apicenter.util.json.JsonUtils;
 
 @Controller
@@ -316,10 +317,32 @@ public class ApiController extends BaseController {
 		return Response.ok(apiMap, "成功");
 	}
 
+	/**
+	 * send
+	 * <p>
+	 * @param parameter
+	 * @param url
+	 * @param requestHeader
+	 * @return 
+	 * @return String
+	 * @author ben
+	 * @date 2017年11月29日 下午4:44:22 
+	 * @Description: TODO
+	 */
 	@RequestMapping(value = "send", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	@ResponseBody
-	public String send(HttpServletRequest request) {
-		request.getHeaderNames();
-		return null;
+	public String send(@RequestParam(value = "parameter", required = true)String parameter,
+			@RequestParam(value = "url", required = true) String url,
+			@RequestParam(value = "requestHeader", required = true) String requestHeader) {
+		try {
+			Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
+			Map<String,String> requestHeaders = JsonUtils.toBean(requestHeader, Map.class);
+			return Response.ok(HttpUtils.sendGet(url, parameters, requestHeaders), "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("ApiController.send[模拟请求]");
+			return Response.error();
+		}
 	}
+
 }
