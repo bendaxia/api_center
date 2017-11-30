@@ -23,7 +23,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	private static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders,String cookie) {
+	private static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";
 		BufferedReader in = null;// 读取响应输入流
 		StringBuffer sb = new StringBuffer();// 存储参数
@@ -59,10 +59,6 @@ public class HttpUtils {
 			for (String key : requestHeaders.keySet()) {
 				httpConn.setRequestProperty(key, requestHeaders.get(key));
 			}
-			// cookie
-			if(!StringUtils.isEmpty(cookie)) {
-				httpConn.setRequestProperty("Cookie", cookie);
-			}
 			// 建立实际的连接
 			httpConn.connect();
 			// 定义BufferedReader输入流来读取URL的响应,并设置编码方式
@@ -97,7 +93,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	private static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders,String cookie) {
+	private static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders) {
 		String result = "";// 返回的结果
 		BufferedReader in = null;// 读取响应输入流
 		PrintWriter out = null;
@@ -132,10 +128,6 @@ public class HttpUtils {
 			// 设置用户自定义的请求头
 			for (String key : requestHeaders.keySet()) {
 				httpConn.setRequestProperty(key, requestHeaders.get(key));
-			}
-			// cookie
-			if(!StringUtils.isEmpty(cookie)) {
-				httpConn.setRequestProperty("Cookie", cookie);
 			}
 			// 设置POST方式
 			httpConn.setDoInput(true);
@@ -237,13 +229,16 @@ public class HttpUtils {
 		if (parameters == null) {
 			parameters = new HashMap<>();
 		}
+		if(!StringUtils.isEmpty(cookie)) {
+			requestHeaders.put("Cookie", cookie);
+		}
 		HttpResult httpResult = new HttpResult();
 		switch (manner) {
 		case "POST":
-			httpResult = sendPost(url, parameters, requestHeaders,cookie);
+			httpResult = sendPost(url, parameters, requestHeaders);
 			break;
 		case "GET":
-			httpResult = sendGet(url, parameters, requestHeaders,cookie);
+			httpResult = sendGet(url, parameters, requestHeaders);
 			break;
 		default:
 			break;
@@ -260,6 +255,6 @@ public class HttpUtils {
 		 Map<String, String> parameters = new HashMap<String, String>();
 		 parameters.put("page", "1");
 		 parameters.put("cityId", "1");
-		 System.out.println(send("POST","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null,null));
+		 System.out.println(send("POST","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null,"1=1;2=2;").getRequestHeaders());
 	}
 }

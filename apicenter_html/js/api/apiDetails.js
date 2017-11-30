@@ -132,7 +132,7 @@ function send(){
 	var domain = $("#domainId").html();
 	var address = $("#addressId").html();
 	var headers = $("#header").val().split("\n");//获取header 在转换为数组
-	var cookie = $("#cookie").val();
+	var cookie = $("#cookie").val().replace(/[\r\n]/g,"");//过滤回车换行
 	var url = domain+address;
 	var manner = $("#mannerId").html();
 	var headersJson = getHeadersJson(headers);
