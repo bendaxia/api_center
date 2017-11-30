@@ -132,10 +132,16 @@ function send(){
 	var domain = $("#domainId").html();
 	var address = $("#addressId").html();
 	var headers = $("#header").val().split("\n");//获取header 在转换为数组
+	var cookies = $("#cookie").val().split("\n");//获取cookie 在转换为数组
 	var url = domain+address;
 	var manner = $("#mannerId").html();
 	var headersJson = getHeadersJson(headers);
 	var parameterJson = getParameterJson();
+	var cookiesJson = getCookiesJson(cookies);
+	//获取cookei
+	//判断接口地址
+	
+	
 	$.ajax({
 		url : WebApplicationPath + "/api/send",
 		type : "post",
@@ -145,6 +151,7 @@ function send(){
 			url:url,
 			parameter:parameterJson,
 			requestHeader:headersJson,
+			cookie:cookiesJson,
 			manner:manner
 		},
 		success : function(result) {
@@ -157,6 +164,7 @@ function send(){
 			c.innerHTML = a;
 			a = c.innerText || c.textContent;
 			c = null;
+			//判断数据是否是json
 			a = jQuery.parseJSON(a);
 			json = JSON.stringify(a);
 			json = formatJson(json);
@@ -190,6 +198,17 @@ function getHeadersJson(headers){
 	var json = JSON.stringify(headerObj);
 	return json;
 }
+function getCookiesJson(cookies){
+	var cookieObj = new Object();
+	for(var i=0;i<cookies.length;i++){
+		var cookie = cookies[i];
+		var key = cookie.split(":")[0];
+		var value = cookie.split(":")[1];
+		cookieObj[key] = value;
+	}
+	var json = JSON.stringify(cookieObj);
+	return json;
+}
 function getParameterJson(){
 	// 取第一个table
 	var tableid = $('#pid');
@@ -206,70 +225,4 @@ function getParameterJson(){
 	}
 	var json = JSON.stringify(otr);
 	return json;
-}
-function repeat(s, count) {
-	return new Array(count + 1).join(s);
-}
-
-function formatJson(json) {
-
-	var json = json;
-
-	var i = 0, len = 0, tab = "    ", targetJson = "", indentLevel = 0, inString = false, currentChar = null;
-
-	for (i = 0, len = json.length; i < len; i += 1) {
-		currentChar = json.charAt(i);
-
-		switch (currentChar) {
-		case '{':
-		case '[':
-			if (!inString) {
-				targetJson += currentChar + "\n" + repeat(tab, indentLevel + 1);
-				indentLevel += 1;
-			} else {
-				targetJson += currentChar;
-			}
-			break;
-		case '}':
-		case ']':
-			if (!inString) {
-				indentLevel -= 1;
-				targetJson += "\n" + repeat(tab, indentLevel) + currentChar;
-			} else {
-				targetJson += currentChar;
-			}
-			break;
-		case ',':
-			if (!inString) {
-				targetJson += ",\n" + repeat(tab, indentLevel);
-			} else {
-				targetJson += currentChar;
-			}
-			break;
-		case ':':
-			if (!inString) {
-				targetJson += ": ";
-			} else {
-				targetJson += currentChar;
-			}
-			break;
-		case ' ':
-		case "\n":
-		case "\t":
-			if (inString) {
-				targetJson += currentChar;
-			}
-			break;
-		case '"':
-			if (i > 0 && json.charAt(i - 1) !== '\\') {
-				inString = !inString;
-			}
-			targetJson += currentChar;
-			break;
-		default:
-			targetJson += currentChar;
-			break;
-		}
-	}
-	return targetJson;
 }

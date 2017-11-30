@@ -335,11 +335,13 @@ public class ApiController extends BaseController {
 	public String send(@RequestParam(value = "parameter", required = true)String parameter,
 			@RequestParam(value = "url", required = true) String url,
 			@RequestParam(value = "requestHeader", required = true) String requestHeader,
+			@RequestParam(value = "cookie", required = true) String cookie,
 			@RequestParam(value = "manner", required = true) String manner) {
 		try {
 			Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
 			Map<String,String> requestHeaders = JsonUtils.toBean(requestHeader, Map.class);
-			HttpResult httpResult = HttpUtils.send(manner,url, parameters, requestHeaders);
+			Map<String,String> cookies = JsonUtils.toBean(cookie, Map.class);
+			HttpResult httpResult = HttpUtils.send(manner,url, parameters, requestHeaders,cookies);
 			if(httpResult==null) {
 				return Response.fail("请求失败,请检查");
 			}
