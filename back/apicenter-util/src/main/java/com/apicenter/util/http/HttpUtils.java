@@ -70,6 +70,7 @@ public class HttpUtils {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			result = e.toString();
 		} finally {
 			try {
 				if (in != null) {
@@ -147,6 +148,7 @@ public class HttpUtils {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			result = e.toString();
 		} finally {
 			try {
 				if (out != null) {
@@ -255,6 +257,6 @@ public class HttpUtils {
 		 Map<String, String> parameters = new HashMap<String, String>();
 		 parameters.put("page", "1");
 		 parameters.put("cityId", "1");
-		 System.out.println(send("POST","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null,"1=1;2=2;").getRequestHeaders());
+		 System.out.println(send("GET","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null,"1=1;2=2;").getResult());
 	}
 }

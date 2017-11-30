@@ -137,7 +137,10 @@ function send(){
 	var manner = $("#mannerId").html();
 	var headersJson = getHeadersJson(headers);
 	var parameterJson = getParameterJson();
-	//判断接口地址
+	if(!IsURL(url)){
+		$("#jsonId").html("接口地址无效!");
+		return;
+	}
 	$.ajax({
 		url : WebApplicationPath + "/api/send",
 		type : "post",
@@ -160,11 +163,12 @@ function send(){
 			c.innerHTML = a;
 			a = c.innerText || c.textContent;
 			c = null;
-			//判断数据是否是json
-			a = jQuery.parseJSON(a);
-			json = JSON.stringify(a);
-			json = formatJson(json);
-			
+			var json = a;
+			if(isJSON(a)){
+				a = jQuery.parseJSON(a);
+				json = JSON.stringify(a);
+				json = formatJson(json);
+			}
 			var header ="General:\n";
 			for(var i=0;i<result.data.general.length;i++){
 				header+=result.data.general[i]+"\n";
@@ -176,6 +180,9 @@ function send(){
 			header += "\nResponse Header:\n";
 			for(var i=0;i<result.data.responseHeaders.length;i++){
 				header+=result.data.responseHeaders[i]+"\n";
+			}
+			if(json==""){
+				json=header;//如果返回为空,把header展示出来
 			}
 			$("#jsonId").html(json);
 			$("#proId").html(header);
