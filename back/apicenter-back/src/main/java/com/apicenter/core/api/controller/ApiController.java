@@ -340,8 +340,7 @@ public class ApiController extends BaseController {
 		try {
 			Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
 			Map<String,String> requestHeaders = JsonUtils.toBean(requestHeader, Map.class);
-			Map<String,String> cookies = JsonUtils.toBean(cookie, Map.class);
-			HttpResult httpResult = HttpUtils.send(manner,url, parameters, requestHeaders,cookies);
+			HttpResult httpResult = HttpUtils.send(manner,url, parameters, requestHeaders,cookie);
 			if(httpResult==null) {
 				return Response.fail("请求失败,请检查");
 			}

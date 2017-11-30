@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.apicenter.util.http.bean.HttpResult;
 
 public class HttpUtils {
@@ -21,7 +23,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	private static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders,Map<String, String> cookies) {
+	private static HttpResult sendGet(String url, Map<String, String> parameters, Map<String, String> requestHeaders,String cookie) {
 		String result = "";
 		BufferedReader in = null;// 读取响应输入流
 		StringBuffer sb = new StringBuffer();// 存储参数
@@ -58,8 +60,8 @@ public class HttpUtils {
 				httpConn.setRequestProperty(key, requestHeaders.get(key));
 			}
 			// cookie
-			for (String key : cookies.keySet()) {
-				httpConn.setRequestProperty(key, cookies.get(key));
+			if(!StringUtils.isEmpty(cookie)) {
+				httpConn.setRequestProperty("Cookie", cookie);
 			}
 			// 建立实际的连接
 			httpConn.connect();
@@ -95,7 +97,7 @@ public class HttpUtils {
 	 *            请求参数，Map类型。
 	 * @return 远程响应结果
 	 */
-	private static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders,Map<String, String> cookies) {
+	private static HttpResult sendPost(String url, Map<String, String> parameters, Map<String, String> requestHeaders,String cookie) {
 		String result = "";// 返回的结果
 		BufferedReader in = null;// 读取响应输入流
 		PrintWriter out = null;
@@ -132,8 +134,8 @@ public class HttpUtils {
 				httpConn.setRequestProperty(key, requestHeaders.get(key));
 			}
 			// cookie
-			for (String key : cookies.keySet()) {
-				httpConn.setRequestProperty(key, cookies.get(key));
+			if(!StringUtils.isEmpty(cookie)) {
+				httpConn.setRequestProperty("Cookie", cookie);
 			}
 			// 设置POST方式
 			httpConn.setDoInput(true);
@@ -228,23 +230,20 @@ public class HttpUtils {
 	 * @Description: TODO
 	 */
 	public static HttpResult send(String manner, String url, Map<String, String> parameters,
-			Map<String, String> requestHeaders,Map<String, String> cookies) {
+			Map<String, String> requestHeaders,String cookie) {
 		if (requestHeaders == null) {
 			requestHeaders = new HashMap<>();
 		}
 		if (parameters == null) {
 			parameters = new HashMap<>();
 		}
-		if (cookies == null) {
-			cookies = new HashMap<>();
-		}
 		HttpResult httpResult = new HttpResult();
 		switch (manner) {
 		case "POST":
-			httpResult = sendPost(url, parameters, requestHeaders,cookies);
+			httpResult = sendPost(url, parameters, requestHeaders,cookie);
 			break;
 		case "GET":
-			httpResult = sendGet(url, parameters, requestHeaders,cookies);
+			httpResult = sendGet(url, parameters, requestHeaders,cookie);
 			break;
 		default:
 			break;
