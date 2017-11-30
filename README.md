@@ -1,7 +1,7 @@
 # api_center
 接口管理系统
 
-# ab()
+# ab(Apache Bench)
 yum install httpd-tools
 
 # sql
