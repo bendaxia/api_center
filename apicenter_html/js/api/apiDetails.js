@@ -132,16 +132,12 @@ function send(){
 	var domain = $("#domainId").html();
 	var address = $("#addressId").html();
 	var headers = $("#header").val().split("\n");//获取header 在转换为数组
-	var cookies = $("#cookie").val().split("\n");//获取cookie 在转换为数组
+	var cookie = $("#cookie").val();
 	var url = domain+address;
 	var manner = $("#mannerId").html();
 	var headersJson = getHeadersJson(headers);
 	var parameterJson = getParameterJson();
-	var cookiesJson = getCookiesJson(cookies);
-	//获取cookei
 	//判断接口地址
-	
-	
 	$.ajax({
 		url : WebApplicationPath + "/api/send",
 		type : "post",
@@ -151,7 +147,7 @@ function send(){
 			url:url,
 			parameter:parameterJson,
 			requestHeader:headersJson,
-			cookie:cookiesJson,
+			cookie:cookie,
 			manner:manner
 		},
 		success : function(result) {
@@ -196,17 +192,6 @@ function getHeadersJson(headers){
 		headerObj[key] = value;
 	}
 	var json = JSON.stringify(headerObj);
-	return json;
-}
-function getCookiesJson(cookies){
-	var cookieObj = new Object();
-	for(var i=0;i<cookies.length;i++){
-		var cookie = cookies[i];
-		var key = cookie.split(":")[0];
-		var value = cookie.split(":")[1];
-		cookieObj[key] = value;
-	}
-	var json = JSON.stringify(cookieObj);
 	return json;
 }
 function getParameterJson(){
