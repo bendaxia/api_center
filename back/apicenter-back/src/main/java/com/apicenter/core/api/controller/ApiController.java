@@ -129,10 +129,10 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
-			apiId = api.getId();
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
 			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
 			this.apiFacedService.addApi(api, aReturns, aParams);
+			apiId = api.getId();
 			// 问题:想办法支持header 和 cookie 2017 09 08
 
 			// 解决:header 和 cookie 在模拟请求的时候自行添加 2017 09 12
