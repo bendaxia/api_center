@@ -301,7 +301,7 @@ function updateApi(){
 		dataType : "json",
 		contentType: "application/x-www-form-urlencoded;charset=utf-8",
 		beforeSend : function(xhr){
-			xhr.setRequestHeader("x-request-user-id","1");//临时这么写
+			xhr.setRequestHeader("x-request-user-id",getCookie(apiCenterUserIdCookieKey));
 		},
 		data : {
 			apiId:getUrlParam('apiId'),
