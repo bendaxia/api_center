@@ -367,7 +367,7 @@ public class ApiController extends BaseController {
 	 * @date 2017年12月1日 上午10:03:05 
 	 * @Description: TODO
 	 */
-	@RequestMapping(value = "abBend", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	@RequestMapping(value = "abSend", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	@ResponseBody
 	public String abSend(@RequestParam(value = "concurrentintNum", required = true)int concurrentintNum,
 			@RequestParam(value = "requestCount", required = true)int requestCount,

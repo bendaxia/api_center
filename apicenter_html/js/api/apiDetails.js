@@ -190,6 +190,47 @@ function send(){
 		}
 	});
 }
+/**
+ * 性能测试
+ * @returns
+ */
+function abSend(){
+	var domain = $("#domainId").html();
+	var address = $("#addressId").html();
+	var headers = $("#header").val().split("\n");//获取header 在转换为数组
+	var cookie = $("#cookie").val().replace(/[\r\n]/g,"");//过滤回车换行
+	var url = domain+address;
+	var headersJson = getHeadersJson(headers);
+	var parameterJson = getParameterJson();
+	var cNum = $("#cNumId").val();
+	var nNum = $("#nNumId").val();
+	if(!IsURL(url)){
+		$("#jsonId").html("接口地址无效!");
+		return;
+	}
+	$.ajax({
+		url : WebApplicationPath + "/api/abSend",
+		type : "post",
+		dataType : "json",
+		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		data : {
+			url:url,
+			parameter:parameterJson,
+			requestHeader:headersJson,
+			cookie:cookie,
+			concurrentintNum:cNum,
+			requestCount:nNum
+		},
+		success : function(result) {
+			if(result.code!=Response_Code_OK){
+				alert(result.message);
+				return;
+			}
+			$("#abSendId").html(result.data);
+		}
+	});
+}
+
 function getHeadersJson(headers){
 	var headerObj = new Object();
 	for(var i=0;i<headers.length;i++){
