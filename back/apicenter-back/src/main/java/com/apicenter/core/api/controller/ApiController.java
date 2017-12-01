@@ -28,6 +28,7 @@ import com.apicenter.core.service.ApiService;
 import com.apicenter.user.bean.ApiCenterUser;
 import com.apicenter.user.service.UserService;
 import com.apicenter.util.bean.BeanUtils;
+import com.apicenter.util.cmd.CmdUtils;
 import com.apicenter.util.http.HttpUtils;
 import com.apicenter.util.http.bean.HttpResult;
 import com.apicenter.util.json.JsonUtils;
@@ -348,6 +349,40 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("ApiController.send[模拟请求]");
+			return Response.error();
+		}
+	}
+	
+	/**
+	 * 性能测试
+	 * <p>
+	 * @param parameter
+	 * @param url
+	 * @param requestHeader
+	 * @param cookie
+	 * @return
+	 * @throws Exception 
+	 * @return String
+	 * @author ben
+	 * @date 2017年12月1日 上午10:03:05 
+	 * @Description: TODO
+	 */
+	@RequestMapping(value = "abBend", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	@ResponseBody
+	public String abSend(@RequestParam(value = "concurrentintNum", required = true)int concurrentintNum,
+			@RequestParam(value = "requestCount", required = true)int requestCount,
+			@RequestParam(value = "parameter", required = true)String parameter,
+			@RequestParam(value = "url", required = true) String url,
+			@RequestParam(value = "requestHeader", required = true) String requestHeader,
+			@RequestParam(value = "cookie", required = true) String cookie)throws Exception{
+		try {
+			Map<String,String> parameters = JsonUtils.toBean(parameter, Map.class);
+			Map<String,String> requestHeaders = JsonUtils.toBean(requestHeader, Map.class);
+			String result = CmdUtils.abPerformanceTesting(concurrentintNum, requestCount, url, requestHeaders, parameters, cookie);
+			return Response.ok(result, "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("ApiController.abSend[性能测试]");
 			return Response.error();
 		}
 	}
