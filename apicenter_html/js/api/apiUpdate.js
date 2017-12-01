@@ -14,11 +14,11 @@ function listWithGroup() {
 					}
 					for (var i = 0; i < result.data.length; i++) {
 						var infa = result.data[i];
-						interface_html += ('<ul  class="nav nav-pills nav-stacked">'+ '<li role="presentation" class="group"><a href="javascript:void(0)"><i class="glyphicon glyphicon-equalizer"></i>'+ infa.gruopName + '</a>' + '<ul  class="nav nav-pills nav-stacked" >');
+						interface_html += ('<ul  class="nav nav-pills nav-stacked">'+ '<li role="presentation" class="group click"><a href="javascript:void(0)"><i class="glyphicon glyphicon-equalizer"></i>'+ infa.gruopName + '</a>' + '<ul  class="nav nav-pills nav-stacked" >');
 						option_html += ('<option value="0">'+ infa.gruopName + '</option>');
 						for (var y = 0; y < infa.apiGroupDetails.length; y++) {
 							var ins = infa.apiGroupDetails[y];
-							interface_html += ('<li role="presentation">'+ '<a href="/apicenter_html/html/api/apiDetails.html?apiId='+ ins.apiId + '">' + ins.apiName + '</a>' + '</li>');
+							interface_html += ('<li role="presentation"style="display: none;">'+ '<a href="/apicenter_html/html/api/apiDetails.html?apiId='+ ins.apiId + '">' + ins.apiName + '</a>' + '</li>');
 						}
 						interface_html += ('</ul>' + '</li>' + '</ul>');
 					}
