@@ -118,6 +118,7 @@ public class ApiController extends BaseController {
 			@RequestParam(value = "apiParams", required = false) String apiParams,
 			@RequestParam(value = "apiReturns", required = false) String apiReturns) {
 		int userId = getUserId(request);
+		int apiId = 0;
 		try {
 			ApiCenterApi api = new ApiCenterApi();
 			api.setApiName(apiName);
@@ -128,6 +129,7 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
+			apiId = api.getId();
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
 			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
 			this.apiFacedService.addApi(api, aReturns, aParams);
@@ -139,7 +141,7 @@ public class ApiController extends BaseController {
 			logger.error("ApiController.addApi[添加api],参数:userId:" + userId);
 			return Response.error();
 		}
-		return Response.ok();
+		return Response.ok(apiId,"ok");
 	}
 
 	/**

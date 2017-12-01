@@ -221,7 +221,7 @@ function addApi(){
 				alert(result.message);
 				return;
 			}
-			alert("成功");
+			window.location.href = "/apicenter_html/html/api/apiDetails.html?apiId="+result.data;
 		}
 	});
 }
