@@ -1,5 +1,6 @@
 var Response_Code_OK = 200;// 与客户端约定的code值
 var apiCenterUserIdCookieKey="apicenter-userId";//userId的cookie key
+var apiCenterUserNameCookieKey="apicenter-userName";//userName的cookie key
 
 var WebApplicationPath = "http://127.0.0.1:8080/apicenter";// 全局域名
 var appName = "apicenter";// 全局服务端入口名
@@ -15,6 +16,8 @@ $(document).ready(function() {// 进入页面加载
 		if (userId == "") {
 			window.location.href = tn;
 		}
+		//设置动态数据
+		$("#userName").html(getCookie(apiCenterUserNameCookieKey));
 	}
 });
 /**

@@ -31,8 +31,8 @@ function login() {
 						alert(data.message);
 						return;
 					}
-//					console.log(data);
 					setCookie(apiCenterUserIdCookieKey,data.data.userId,365);
+					setCookie(apiCenterUserNameCookieKey,data.data.userName,365);
 					window.location.href = "/apicenter_html/html/api/apiIndex.html";
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
