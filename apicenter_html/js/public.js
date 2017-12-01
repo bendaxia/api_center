@@ -1,6 +1,6 @@
 var Response_Code_OK = 200;// 与客户端约定的code值
-var apiCenterUserIdCookieKey="apicenter-userId";//userId的cookie key
-var apiCenterUserNameCookieKey="apicenter-userName";//userName的cookie key
+var apiCenterUserIdCookieKey = "apicenter-userId";// userId的cookie key
+var apiCenterUserNameCookieKey = "apicenter-userName";// userName的cookie key
 
 var WebApplicationPath = "http://127.0.0.1:8080/apicenter";// 全局域名
 var appName = "apicenter";// 全局服务端入口名
@@ -16,12 +16,22 @@ $(document).ready(function() {// 进入页面加载
 		if (userId == "") {
 			window.location.href = tn;
 		}
-		//设置动态数据
+		// 设置动态数据
 		$("#userName").html(getCookie(apiCenterUserNameCookieKey));
 	}
 });
 /**
+ * 退出登录
+ * @returns
+ */
+function signOut() {
+	delCookie(apiCenterUserIdCookieKey);
+	delCookie(apiCenterUserNameCookieKey);
+	window.location.href = "/" + webHtmlName + "/html/user/loginView.html";
+}
+/**
  * 添加cookie
+ * 
  * @param c_name
  * @param value
  * @param expiredays
@@ -30,10 +40,15 @@ $(document).ready(function() {// 进入页面加载
 function setCookie(c_name, value, expiredays) {
 	var exdate = new Date()
 	exdate.setDate(exdate.getDate() + expiredays)
-	document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()+";path=/")
+	document.cookie = c_name
+			+ "="
+			+ escape(value)
+			+ ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()
+					+ ";path=/")
 }
 /**
  * 获取cookie
+ * 
  * @param c_name
  * @returns
  */
@@ -51,6 +66,15 @@ function getCookie(c_name) {
 	return ""
 }
 /**
+ * 删除cookie
+ * 
+ * @param name
+ * @returns
+ */
+function delCookie(name) {
+    setCookie(name, "", -1);    
+}
+/**
  * url取参数
  * 
  * @param name
@@ -65,6 +89,7 @@ function getUrlParam(name) {
 }
 /**
  * json格式化
+ * 
  * @param json
  * @returns
  */
@@ -135,6 +160,7 @@ function repeat(s, count) {
 }
 /**
  * 判断是否是json
+ * 
  * @param str
  * @returns
  */
@@ -160,6 +186,7 @@ function isJSON(str) {
 }
 /**
  * 判断url是否合法
+ * 
  * @param str_url
  * @returns
  */
