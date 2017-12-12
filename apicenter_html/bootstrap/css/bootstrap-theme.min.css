@@ -27,7 +27,7 @@ body{color:#929292}
 
 
 
-.btn-primary{background: #1ABC9C; border-color: #1ABC9C;outline:none;}
+.btn-primary{background: #465a56; border-color: #465a56;outline:none;}
 .btn-primary:hover{background-color: #14a689;border-color: #14a689;}
 .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover{background-color: #1ABC9C;border-color: #1ABC9C;}
 
