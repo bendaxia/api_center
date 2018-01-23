@@ -50,6 +50,8 @@ public class ApiCenterApi implements Serializable {
      */
     private int apiGroupId;
 
+    private String apiResultData;
+
     private static final long serialVersionUID = 1L;
 
     public int getId() {
@@ -132,6 +134,14 @@ public class ApiCenterApi implements Serializable {
         this.apiGroupId = apiGroupId;
     }
 
+    public String getApiResultData() {
+        return apiResultData;
+    }
+
+    public void setApiResultData(String apiResultData) {
+        this.apiResultData = apiResultData;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -148,6 +158,7 @@ public class ApiCenterApi implements Serializable {
         sb.append(", founderUserId=").append(founderUserId);
         sb.append(", createTime=").append(createTime);
         sb.append(", apiGroupId=").append(apiGroupId);
+        sb.append(", apiResultData=").append(apiResultData);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

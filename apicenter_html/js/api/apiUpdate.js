@@ -174,7 +174,8 @@ function getApi(){
 			$("#domain").get(0).selectedIndex = 0;//显示出来
 			$("#address").val(api.apiAddress);
 			$("#description").val(api.apiDescribe);
-			
+			$("#resultData").val(api.apiResultData);
+
 			var paramTableId="";
 			paramTableId+=(
 					'<tr>'	+
@@ -247,6 +248,7 @@ function updateApi(){
 	var apiDomain = $("#domain").val();
 	var apiAddress = $("#address").val();
 	var apiDescription = $("#description").val();
+	var apiResultData = $("#resultData").val();
 
 	// 取第一个table
 	var tableid = $('#paramTableId');
@@ -312,6 +314,7 @@ function updateApi(){
 			apiDomain:apiDomain,
 			apiAddress:apiAddress,
 			apiDescribe:apiDescription,
+			apiResultData:apiResultData,
 			apiParams:JSON.stringify(apiParams),
 			apiReturns:JSON.stringify(apiReturns)
 		},

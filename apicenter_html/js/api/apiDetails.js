@@ -67,6 +67,7 @@ function getApi(){
 			$("#addressId").html(apiData.apiAddress);
 			$("#descriptionId").html(apiData.apiDescribe);
 			$("#picId").html(apiData.userName);
+			$("#resultData").html(apiData.apiResultData);
 			$("#picphoneId").html("暂时不支持");
 			var param_html = "";
 			var return_html = "";

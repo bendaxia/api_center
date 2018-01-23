@@ -149,7 +149,7 @@ function addApi(){
 	var apiDomain = $("#domain").val();
 	var apiAddress = $("#address").val();
 	var apiDescription = $("#description").val();
-
+	var apiResultData = $("#resultData").val();
 	// 取第一个table
 	var tableid = $('#paramTableId');
 	// 从table拿到tr
@@ -213,6 +213,7 @@ function addApi(){
 			apiDomain:apiDomain,
 			apiAddress:apiAddress,
 			apiDescribe:apiDescription,
+			apiResultData:apiResultData,
 			apiParams:JSON.stringify(apiParams),
 			apiReturns:JSON.stringify(apiReturns)
 		},

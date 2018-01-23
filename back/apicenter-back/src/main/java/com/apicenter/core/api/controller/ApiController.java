@@ -115,6 +115,7 @@ public class ApiController extends BaseController {
 			@RequestParam(value = "apiDomain", required = true) String apiDomain,
 			@RequestParam(value = "apiAddress", required = true) String apiAddress,
 			@RequestParam(value = "apiDescribe", required = true) String apiDescribe,
+			@RequestParam(value = "apiResultData", required = false) String apiResultData,
 			@RequestParam(value = "apiParams", required = false) String apiParams,
 			@RequestParam(value = "apiReturns", required = false) String apiReturns) {
 		int userId = getUserId(request);
@@ -129,6 +130,7 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
+			api.setApiResultData(apiResultData);
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
 			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
 			this.apiFacedService.addApi(api, aReturns, aParams);
@@ -175,6 +177,7 @@ public class ApiController extends BaseController {
 			@RequestParam(value = "apiDomain", required = true) String apiDomain,
 			@RequestParam(value = "apiAddress", required = true) String apiAddress,
 			@RequestParam(value = "apiDescribe", required = true) String apiDescribe,
+			@RequestParam(value = "apiResultData", required = false) String apiResultData,
 			@RequestParam(value = "apiParams", required = false) String apiParams,
 			@RequestParam(value = "apiReturns", required = false) String apiReturns) {
 		int userId = getUserId(request);
@@ -195,6 +198,7 @@ public class ApiController extends BaseController {
 			api.setApiAddress(apiAddress);
 			api.setApiDescribe(apiDescribe);
 			api.setFounderUserId(userId);
+			api.setApiResultData(apiResultData);
 			List<ApiCenterReturn> aReturns = JsonUtils.jsonToList(apiReturns, ApiCenterReturn.class);
 			List<ApiCenterParam> aParams = JsonUtils.jsonToList(apiParams, ApiCenterParam.class);
 			this.apiFacedService.updateApi(api, aReturns, aParams);

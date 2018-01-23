@@ -13,6 +13,9 @@
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="api_group_id" property="apiGroupId" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.apicenter.core.bean.ApiCenterApi" extends="BaseResultMap" >
+    <result column="api_result_data" property="apiResultData" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -80,6 +83,25 @@
       ${fields}
     </if>
   </sql>
+  <sql id="Blob_Column_List" >
+    api_result_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.apicenter.core.bean.ApiCenterApiQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from api_center_api
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.apicenter.core.bean.ApiCenterApiQuery" >
     select
     <if test="distinct" >
@@ -97,9 +119,11 @@
       limit #{startRow} , #{pageSize}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="int" >
     select 
-    id,api_name,api_agreement,api_mode,api_domain,api_address,api_describe,founder_user_id,create_time,api_group_id
+    id,api_name,api_agreement,api_mode,api_domain,api_address,api_describe,founder_user_id,create_time,api_group_id,api_result_data
+    ,
+    <include refid="Blob_Column_List" />
     from api_center_api
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -117,11 +141,11 @@
     insert into api_center_api (id, api_name, api_agreement, 
       api_mode, api_domain, api_address, 
       api_describe, founder_user_id, create_time, 
-      api_group_id)
+      api_group_id, api_result_data)
     values (#{id,jdbcType=INTEGER}, #{apiName,jdbcType=VARCHAR}, #{apiAgreement,jdbcType=VARCHAR}, 
       #{apiMode,jdbcType=VARCHAR}, #{apiDomain,jdbcType=VARCHAR}, #{apiAddress,jdbcType=VARCHAR}, 
       #{apiDescribe,jdbcType=VARCHAR}, #{founderUserId,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT}, 
-      #{apiGroupId,jdbcType=INTEGER})
+      #{apiGroupId,jdbcType=INTEGER}, #{apiResultData,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.apicenter.core.bean.ApiCenterApi"  useGeneratedKeys="true" keyProperty="id" >
     insert into api_center_api
@@ -148,6 +172,9 @@
       founder_user_id,
       create_time,
       api_group_id,
+      <if test="apiResultData != null" >
+        api_result_data,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{id,jdbcType=INTEGER},
@@ -172,6 +199,9 @@
       #{founderUserId,jdbcType=INTEGER},
       #{createTime,jdbcType=BIGINT},
       #{apiGroupId,jdbcType=INTEGER},
+      <if test="apiResultData != null" >
+        #{apiResultData,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.apicenter.core.bean.ApiCenterApiQuery" resultType="java.lang.Integer" >
@@ -213,7 +243,27 @@
       <if test="record.apiGroupId != null" >
         api_group_id = #{record.apiGroupId,jdbcType=INTEGER},
       </if>
+      <if test="record.apiResultData != null" >
+        api_result_data = #{record.apiResultData,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update api_center_api
+    set id = #{record.id,jdbcType=INTEGER},
+      api_name = #{record.apiName,jdbcType=VARCHAR},
+      api_agreement = #{record.apiAgreement,jdbcType=VARCHAR},
+      api_mode = #{record.apiMode,jdbcType=VARCHAR},
+      api_domain = #{record.apiDomain,jdbcType=VARCHAR},
+      api_address = #{record.apiAddress,jdbcType=VARCHAR},
+      api_describe = #{record.apiDescribe,jdbcType=VARCHAR},
+      founder_user_id = #{record.founderUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      api_group_id = #{record.apiGroupId,jdbcType=INTEGER},
+      api_result_data = #{record.apiResultData,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -264,7 +314,24 @@
       <if test="apiGroupId != null" >
         api_group_id = #{apiGroupId,jdbcType=INTEGER},
       </if>
+      <if test="apiResultData != null" >
+        api_result_data = #{apiResultData,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.apicenter.core.bean.ApiCenterApi" >
+    update api_center_api
+    set api_name = #{apiName,jdbcType=VARCHAR},
+      api_agreement = #{apiAgreement,jdbcType=VARCHAR},
+      api_mode = #{apiMode,jdbcType=VARCHAR},
+      api_domain = #{apiDomain,jdbcType=VARCHAR},
+      api_address = #{apiAddress,jdbcType=VARCHAR},
+      api_describe = #{apiDescribe,jdbcType=VARCHAR},
+      founder_user_id = #{founderUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      api_group_id = #{apiGroupId,jdbcType=INTEGER},
+      api_result_data = #{apiResultData,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.apicenter.core.bean.ApiCenterApi" >
