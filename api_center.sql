@@ -11,7 +11,7 @@
  Target Server Version : 50173
  File Encoding         : utf-8
 
- Date: 11/13/2017 19:49:27 PM
+ Date: 01/23/2018 16:48:55 PM
 */
 
 SET NAMES utf8;
@@ -32,15 +32,11 @@ CREATE TABLE `api_center_api` (
   `founder_user_id` int(11) NOT NULL COMMENT 'api创建人',
   `create_time` bigint(30) NOT NULL COMMENT '创建时间',
   `api_group_id` int(11) NOT NULL COMMENT 'api所属分组',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `api_center_api`
--- ----------------------------
-BEGIN;
-INSERT INTO `api_center_api` VALUES ('1', '我的业绩', 'http', 'post', 'test.allxiu.com', '/sale/list', '我的业绩调用,该接口已做缓存处理', '1', '1111111', '1'), ('9', '5', 'HTTP', 'GET', 'http://test.allxiu.com', '5', '5', '1', '1506423140135', '1'), ('8', '4', 'HTTP', 'GET', 'http://test.allxiu.com', '4', '4', '1', '1506423082758', '1'), ('7', '2', 'HTTP', 'GET', 'http://test.allxiu.com', '2', '2', '1', '1506422864124', '1'), ('6', '1', 'HTTP', 'GET', 'http://test.allxiu.com', '1', '1', '1', '1506422663987', '1'), ('10', '111', 'HTTP', 'GET', 'http://test.allxiu.com', '1', '1', '1', '1506423325202', '1'), ('11', '211241241', 'HTTP', 'GET', 'http://test.allxiu.com', '124124', '1421241', '1', '1506423456427', '1'), ('12', '211241241', 'HTTP', 'GET', 'http://test.allxiu.com', '124124', '1421241', '1', '1506423555086', '1'), ('13', '123', 'HTTP', 'GET', 'http://test.allxiu.com', '123', '123', '1', '1506424857852', '1'), ('14', '1', 'HTTP', 'GET', 'http://test.allxiu.com', '1', '1', '1', '1506424928576', '1'), ('15', '123', 'HTTP', 'GET', 'http://test.allxiu.com', '123', '123', '1', '1506425277426', '1');
-COMMIT;
+  `api_result_data` text,
+  PRIMARY KEY (`id`),
+  KEY `api_group_id` (`api_group_id`),
+  KEY `founder_user_id` (`founder_user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `api_center_group`
@@ -51,15 +47,9 @@ CREATE TABLE `api_center_group` (
   `group_name` varchar(30) NOT NULL COMMENT '分组名称',
   `create_time` bigint(30) NOT NULL COMMENT '创建时间',
   `founder_user_id` int(11) NOT NULL COMMENT '分组创建人',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `api_center_group`
--- ----------------------------
-BEGIN;
-INSERT INTO `api_center_group` VALUES ('1', '销售模块', '0', '1'), ('2', '订单模块', '0', '1'), ('3', '摄影师模块', '0', '1'), ('4', 'public', '0', '1'), ('5', 'h5', '0', '1');
-COMMIT;
+  PRIMARY KEY (`id`),
+  KEY `founder_user_id` (`founder_user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `api_center_param`
@@ -73,15 +63,9 @@ CREATE TABLE `api_center_param` (
   `param_type` varchar(20) NOT NULL COMMENT '参数类型',
   `test_value` varchar(100) DEFAULT NULL COMMENT '测试参数值',
   `isoptional` int(2) NOT NULL DEFAULT '0' COMMENT '是否可选  0 可选 1不可选',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `api_center_param`
--- ----------------------------
-BEGIN;
-INSERT INTO `api_center_param` VALUES ('1', '1', 'page', '页码', 'int', '1', '1'), ('2', '1', 'pageSize', '每页多少条', 'int', '10', '1');
-COMMIT;
+  PRIMARY KEY (`id`),
+  KEY `api_id` (`api_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=330 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `api_center_return`
@@ -93,15 +77,9 @@ CREATE TABLE `api_center_return` (
   `return_describe` varchar(100) NOT NULL COMMENT '返回描述',
   `return_type` varchar(20) NOT NULL COMMENT '返回类型',
   `api_id` int(11) NOT NULL COMMENT '所属apiid',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `api_center_return`
--- ----------------------------
-BEGIN;
-INSERT INTO `api_center_return` VALUES ('1', 'code', '约定code', 'String', '1'), ('2', 'data', '数据', 'String', '1');
-COMMIT;
+  PRIMARY KEY (`id`),
+  KEY `api_id` (`api_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `api_center_user`
@@ -115,13 +93,6 @@ CREATE TABLE `api_center_user` (
   `user_password` varchar(255) DEFAULT NULL COMMENT '密码',
   `create_time` bigint(30) DEFAULT '0' COMMENT '账户生成时间',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `api_center_user`
--- ----------------------------
-BEGIN;
-INSERT INTO `api_center_user` VALUES ('1', '001', '牛逼者', '001', '1', '0');
-COMMIT;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
