@@ -4,7 +4,6 @@
  Source Server         : 测试环境
  Source Server Type    : MySQL
  Source Server Version : 50173
- Source Host           : 123.206.18.37
  Source Database       : api_center
 
  Target Server Type    : MySQL
