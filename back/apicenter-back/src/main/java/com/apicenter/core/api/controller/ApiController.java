@@ -43,7 +43,7 @@ public class ApiController extends BaseController {
 	@Autowired
 	private ApiFacedService apiFacedService;
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
 
 	/**
 	 * 添加分组
