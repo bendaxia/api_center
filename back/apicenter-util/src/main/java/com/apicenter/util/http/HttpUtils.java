@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.apicenter.util.http.bean.HttpResult;
+import com.apicenter.util.json.JsonUtils;
 
 public class HttpUtils {
 	/**
@@ -165,6 +166,79 @@ public class HttpUtils {
 		httpResult.setResult(result);
 		return httpResult;
 	}
+	
+	private static HttpResult sendPayload(String url, String json, Map<String, String> requestHeaders) {
+		String result = "";// 返回的结果
+		BufferedReader in = null;// 读取响应输入流
+		PrintWriter out = null;
+		StringBuffer sb = new StringBuffer();// 处理请求参数
+		String params = "";// 编码之后的参数
+		java.net.HttpURLConnection httpConn = null;
+		try {
+			params+=json;
+			// 编码请求参数
+//			if(parameters.size()>0) {
+//				if (parameters.size() == 1) {
+//					for (String name : parameters.keySet()) {
+//						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"));
+//					}
+//					params = sb.toString();
+//				} else {
+//					for (String name : parameters.keySet()) {
+//						sb.append(name).append("=").append(java.net.URLEncoder.encode(parameters.get(name), "UTF-8"))
+//						.append("&");
+//					}
+//					String temp_params = sb.toString();
+//					params = temp_params.substring(0, temp_params.length() - 1);
+//				}
+//			}
+			// 创建URL对象
+			java.net.URL connURL = new java.net.URL(url);
+			// 打开URL连接
+			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+			// 设置通用属性
+			httpConn.setRequestProperty("Accept", "*/*");
+			httpConn.setRequestProperty("Connection", "Keep-Alive");
+			httpConn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+			// 设置用户自定义的请求头
+			for (String key : requestHeaders.keySet()) {
+				httpConn.setRequestProperty(key, requestHeaders.get(key));
+			}
+			// 设置POST方式
+			httpConn.setDoInput(true);
+			httpConn.setDoOutput(true);
+			// 获取HttpURLConnection对象对应的输出流
+			out = new PrintWriter(httpConn.getOutputStream());
+			// 发送请求参数
+			out.write(params);
+			// flush输出流的缓冲
+			out.flush(); 
+			// 定义BufferedReader输入流来读取URL的响应，设置编码方式
+			in = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
+			String line;
+			// 读取返回的内容
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = e.toString();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		HttpResult httpResult = getHttpResult(httpConn, requestHeaders);
+		httpResult.setResult(result);
+		return httpResult;
+	}
 
 	/**
 	 * 处理返回数据
@@ -247,16 +321,38 @@ public class HttpUtils {
 		}
 		return httpResult;
 	}
-
+	public static HttpResult send(String manner, String url, String json,
+			Map<String, String> requestHeaders,String cookie) {
+		if (requestHeaders == null) {
+			requestHeaders = new HashMap<>();
+		}
+		if(!StringUtils.isEmpty(cookie)) {
+			requestHeaders.put("Cookie", cookie);
+		}
+		HttpResult httpResult = new HttpResult();
+		switch (manner) {
+		case "Payload":
+			httpResult = sendPayload(url, json, requestHeaders);
+			break;
+		default:
+			break;
+		}
+		return httpResult;
+	}
+// 10132  10315
 	/**
 	 * 主函数，测试请求
 	 *
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
-		 Map<String, String> parameters = new HashMap<String, String>();
-		 parameters.put("page", "1");
-		 parameters.put("cityId", "1");
-		 System.out.println(send("GET","http://test.allxiu.com/v2/home/list/sxp/home",parameters,null,"1=1;2=2;").getResult());
+	public static void main(String[] args) throws Exception {
+		 for(int i=10131;i<10316;i++) {
+			 Map<String, String> requestHeaders = new HashMap<String, String>();
+			 RiskEntryManage r = new RiskEntryManage();
+			 r.setRiskId(String.valueOf(i));
+			 requestHeaders.put("Content-Type", "application/json;charset=UTF-8");
+			 System.out.println(send("Payload","http://172.16.66.120:9898/risk/riskManagement/updateSingleRiskEntry",JsonUtils.toJson(r),requestHeaders,"").getResult());
+		 }
 	}
 }
