@@ -347,12 +347,12 @@ public class HttpUtils {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		 for(int i=10131;i<10316;i++) {
+		 for(int i=10000;i<10609;i++) {
 			 Map<String, String> requestHeaders = new HashMap<String, String>();
 			 RiskEntryManage r = new RiskEntryManage();
 			 r.setRiskId(String.valueOf(i));
 			 requestHeaders.put("Content-Type", "application/json;charset=UTF-8");
-			 System.out.println(send("Payload","http://172.16.66.120:9898/risk/riskManagement/updateSingleRiskEntry",JsonUtils.toJson(r),requestHeaders,"").getResult());
+			 System.out.println(send("Payload","http://127.0.0.1:9898/risk/riskManagement/updateSingleRiskEntry",JsonUtils.toJson(r),requestHeaders,"").getResult());
 		 }
 	}
 }
